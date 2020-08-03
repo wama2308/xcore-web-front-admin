@@ -1,4 +1,6 @@
 module.exports = {
+  "sidebar.categories": "Categorias",
+
   "sidebar.dashboard": "Tablero",
   "sidebar.configuracion": "Configuracion",
   "sidebar.sales": "Ventas",

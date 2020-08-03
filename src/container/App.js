@@ -62,19 +62,19 @@ class App extends Component {
    componentDidMount() {
       if (localStorage.getItem("token") && this.props.dataGeneral === null && this.state.actionReducer === 0) {
          this.setState({ actionReducer: 1 });
-         this.props.ConfigGeneralFunction();
-         this.props.verify();         
+         //this.props.ConfigGeneralFunction();
+         //this.props.verify();
          //this.props.addDataBaseLocalStore();
       }
    }
 
-   componentWillReceiveProps = props => {      
+   componentWillReceiveProps = props => {
       if (props.dataGeneral === null) {
          this.setState({ actionReducer: 0 });
       }
       if (localStorage.getItem("token") && props.dataGeneral === null && this.state.actionReducer === 0) {
          this.setState({ actionReducer: 1 });
-         props.ConfigGeneralFunction();
+         // props.ConfigGeneralFunction();
          //props.addDataBaseLocalStore();   
       }
    }
@@ -98,8 +98,8 @@ class App extends Component {
       let menuRute;
       if (this.props.dataGeneral) {
          menuRute = this.existMenuRute(this.props.dataGeneral.dataMenu, location.pathname);
-      }     
-      
+      }
+
       if (!token && location.pathname === "/forgot/password") {
          return <Route path="/forgot/password" component={AppForgotPassword} />
       } else if (!token && location.pathname === "/code/forgot/password/") {
@@ -128,13 +128,14 @@ class App extends Component {
          return <Redirect to="/signin" />;
       } else if (token && location.pathname === "/") {
          return <Redirect to="/app/dashboard" />;
-      } else if (token && location.pathname !== "/app/dashboard" && location.pathname !== "/signin" && !menuRute && this.props.dataGeneral) {
-         //return <Redirect to="/app/dashboard" />;         
       }
+      // else if (token && location.pathname !== "/app/dashboard" && location.pathname !== "/signin" && !menuRute && this.props.dataGeneral) {
+      //    return <Redirect to="/app/dashboard" />;         
+      // }
       return (
          <RctThemeProvider>
             <Alert {...this.props.alertConfirm} close={this.props.closeDialog} />
-            {
+            {/* {
                ((this.props.dataGeneral === null && localStorage.getItem("token")) ||
                   (this.props.dataGeneral && this.props.dataGeneral.loading))
                && (
@@ -147,9 +148,10 @@ class App extends Component {
                         zIndex: 2
                      }}
                   />
-               )}
+               )
+            } */}
             <NotificationContainer />
-            {
+            {/* {
                (this.props.dataGeneral && !this.props.dataGeneral.loading) &&
                <Route
                   path={`${match.url}app`}
@@ -163,7 +165,20 @@ class App extends Component {
                            }}
                         />}
                />
-            }
+            } */}
+
+            <Route
+               path={`${match.url}app`}
+               render={(props) =>
+                  token
+                     ? <RctDefaultLayout {...props} />
+                     : <Redirect
+                        to={{
+                           pathname: '/signin',
+                           state: { from: props.location }
+                        }}
+                     />}
+            />
 
             <Route path="/horizontal" component={HorizontalLayout} />
             <Route path="/agency" component={AgencyLayout} />

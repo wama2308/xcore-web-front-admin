@@ -236,11 +236,11 @@ class UserBlock extends Component {
 
 	render() {
 		//console.log("user block authUser ", this.props.authUser)
-		let carets = this.caretDropDown(this.props.authUser.business);
+		//let carets = this.caretDropDown(this.props.authUser.business);
 
 		return (
 			<div className="top-sidebar">
-				{
+				{/* {
 					this.state.modal && (
 						<ModalChangeBranchPerfil
 							modal={this.state.modal}
@@ -253,7 +253,7 @@ class UserBlock extends Component {
 							confirm={this.props.confirm}
 						/>
 					)
-				}
+				} */}
 				<div className="sidebar-user-block">
 					<Dropdown
 						isOpen={this.state.userDropdownMenu}
@@ -274,17 +274,17 @@ class UserBlock extends Component {
 								/>
 							</div>
 							<div className="user-info">
-								<span className="user-name ml-4">{localStorage.getItem("username")}</span>
-								<i className="zmdi zmdi-chevron-down dropdown-icon mx-4"></i>
+								<span className="user-name ml-3">{localStorage.getItem("names")}</span>
+								<i className="zmdi zmdi-chevron-down dropdown-icon mx-3"></i>
 							</div>
 						</DropdownToggle>
 						<DropdownMenu>
 							<ul className="list-unstyled mb-0">
 								<li className="p-15 border-bottom user-profile-top bg-primary rounded-top">
-									<p className="text-white mb-0 fs-14">{localStorage.getItem("name")} {localStorage.getItem("surname")}</p>
-									<span className="" style={{ fontSize: '13px' }}>{localStorage.getItem("user")}</span>
+									<p className="text-white mb-0 fs-14">{localStorage.getItem("names")} {localStorage.getItem("surnames")}</p>
+									<span className="" style={{ fontSize: '13px' }}>{localStorage.getItem("email")}</span>
 								</li>
-								<li className="border-top">
+								{/* <li className="border-top">
 									<a href="#" onClick={() => this.dropItemBusiness()} title={`${carets.businessCaret} - ${carets.branchOfficeCaret}`}>
 										<div style={{ display: 'flex' }}>
 											<div>
@@ -301,7 +301,7 @@ class UserBlock extends Component {
 										<i className="zmdi zmdi-account text-primary mr-3"></i>
 										<span>{this.updateLabel(carets.perfilCaret)}</span>
 									</a>
-								</li>
+								</li> */}
 								<li className="border-top">
 									<a href="#" onClick={(e) => this.logoutUser(e)}>
 										<i className="zmdi zmdi-power text-danger mr-3"></i>

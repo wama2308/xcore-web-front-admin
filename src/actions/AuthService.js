@@ -10,8 +10,9 @@ export default class AuthService {
       axios
         .post("/api/v1/auth/login", data)
         .then((res) => {
+          //console.log("login ", res.data)
           const result = decode(res.data.token);
-          this.setUserInTheLocalStorage(res.data.user);
+          this.setUserInTheLocalStorage(res.data.user[0]);
           this.setTokenInTheLocalStorage(res.data.token);
           resolve({
             logged: true,

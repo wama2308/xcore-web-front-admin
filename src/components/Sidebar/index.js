@@ -84,8 +84,12 @@ class Sidebar extends Component {
 							>
 								<UserBlock />
 								{
-									!agencySidebar && dataGeneral ?
-										<SidebarContent dataGeneral={dataGeneral} />
+									// !agencySidebar && dataGeneral ?
+									// 	<SidebarContent dataGeneral={dataGeneral} />
+									// 	:
+									// 	<AgencySidebar />
+									!agencySidebar ?
+										<SidebarContent />
 										:
 										<AgencySidebar />
 								}

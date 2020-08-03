@@ -54,8 +54,8 @@ const Carts = (props) => {
 
   const { cart, client, deleteItemFromCart, location, dataGeneral } = props;
 
-  const { countryConfiguration } = dataGeneral;
-  const { currency_symbol } = countryConfiguration;
+  //const { countryConfiguration } = dataGeneral;
+  //const { currency_symbol } = countryConfiguration;
 
   const deleteItemCart = (cart) => {
     const message = {
@@ -135,7 +135,7 @@ const Carts = (props) => {
                         </div>
                         <div className="text-center w-30">
                           <span className="text-muted fs-12 d-block mb-10">
-                            {number_format(cart.price, 2)} {currency_symbol} X {cart.productQuantity}
+                            {/* {number_format(cart.price, 2)} {currency_symbol} X {cart.productQuantity} */}
                           </span>
                         </div>
                         <div className="text-center w-5">
@@ -176,7 +176,7 @@ const Carts = (props) => {
                     </Button>
                   </div>
                   <span className="fw-normal text-dark font-weight-bold font-xs">
-                    <IntlMessages id="widgets.total" /> {getTotalPrice().totalPrice} {currency_symbol}
+                    {/* <IntlMessages id="widgets.total" /> {getTotalPrice().totalPrice} {currency_symbol} */}
                   </span>
                 </div>
               </Fragment>

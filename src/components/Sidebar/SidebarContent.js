@@ -6,6 +6,7 @@ import List from '@material-ui/core/List';
 import ListSubheader from '@material-ui/core/ListSubheader';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import navLinks from './NavLinks';
 
 import IntlMessages from 'Util/IntlMessages';
 
@@ -27,8 +28,8 @@ class SidebarContent extends Component {
 	}
 
 	render() {
-		const { sidebarMenus } = this.props.sidebar;
-		//const menuDynamic = { category1: this.props.dataGeneral.dataMenu };
+		//const { sidebarMenus } = this.props.sidebar;
+		//const menuDynamic = { category1: this.props.dataGeneral.dataMenu };	
 
 		return (
 			<div className="rct-sidebar-nav">
@@ -41,12 +42,12 @@ class SidebarContent extends Component {
 					// 	</ListSubheader>}
 					>
 						{
-							Object.keys(sidebarMenus).length > 0 &&
-							sidebarMenus.category1.map((menu, key) => (
+							Object.keys(navLinks).length > 0 &&
+							navLinks.category1.map((menu, key) => (
 								<NavMenuItem
 									menu={menu}
 									key={key}
-									onToggleMenu={() => this.toggleMenu(menu, 'category1', sidebarMenus)}
+									onToggleMenu={() => this.toggleMenu(menu, 'category1', navLinks)}
 								/>
 							))
 						}

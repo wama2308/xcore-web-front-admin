@@ -545,11 +545,11 @@ const Modal = (props) => {
     }
   };
 
-  const { countryConfiguration } = dataGeneral;
-  const { typeIdentities } = countryConfiguration;
-  const { civilState, fingers, sex } = dataGeneral.dataGeneral
-    ? dataGeneral.dataGeneral
-    : [];
+  // const { countryConfiguration } = dataGeneral;
+  // const { typeIdentities } = countryConfiguration;
+  // const { civilState, fingers, sex } = dataGeneral.dataGeneral
+  //   ? dataGeneral.dataGeneral
+  //   : [];
 
   return (
     <Dialog
@@ -625,7 +625,8 @@ const Modal = (props) => {
                       onChange={(option) =>
                         handleChangeSelect(option, "type_identity_id")
                       }
-                      options={typeIdentities}
+                      //options={typeIdentities}
+                      options={[]}
                     />
                     <FormFeedback>{errors["type_identity_id"]}</FormFeedback>
                   </div>
@@ -679,7 +680,8 @@ const Modal = (props) => {
                       onChange={(option) =>
                         handleChangeSelect(option, "civil_state_id")
                       }
-                      options={civilState}
+                      //options={civilState}
+                      options={[]}
                     />
                     <FormFeedback>{errors["civil_state_id"]}</FormFeedback>
                   </div>
@@ -696,7 +698,8 @@ const Modal = (props) => {
                       onChange={(option) =>
                         handleChangeSelect(option, "sex_id")
                       }
-                      options={sex}
+                      //options={sex}
+                      options={[]}
                     />
                     <FormFeedback>{errors["sex_id"]}</FormFeedback>
                   </div>
@@ -1134,7 +1137,8 @@ const Modal = (props) => {
                                               biometric.uuidv4
                                             )
                                           }
-                                          options={fingers}
+                                          //options={fingers}
+                                          options={[]}
                                         />
                                         <FormFeedback>
                                           {
