@@ -1,0 +1,519 @@
+paths:
+  /account/packages:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-packages-index
+      tags:
+        - account packages
+      summary: Para ver todas los paquetes habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/packages/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-packages-disabled
+      tags:
+        - account packages
+      summary: Para ver todas los paquetes deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/packages/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: packages-select
+      tags:
+        - account packages
+      summary: Select de packages
+      responses:
+        200:
+          description: success
+
+  /account/packages/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del paquete a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-packages-show
+      tags:
+        - account packages
+      summary: Para ver un paquete
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/packages/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-packages-store
+      tags:
+        - account packages
+      summary: Crea un nuevo paquete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del paquete
+                description:
+                  required: true
+                  type: string
+                  summary: Este es la descripcion del paquete
+                image:
+                  required: false
+                  type: string
+                  summary: Este es la imagen promocional del paquete
+                amount:
+                  required: true
+                  type: integer
+                  summary: Este es el monto del paquete
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Este es el impuesto del paquete
+                class:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      class_id:
+                        required: false
+                        type: string
+                        summary: Id de la clase a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son las clases que incluye el paquete
+                plans:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      plans_id:
+                        required: false
+                        type: string
+                        summary: Id del plan a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son los planes que incluye el paquete
+                areas:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      areas_id:
+                        required: false
+                        type: string
+                        summary: Id del area a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son las areas que incluye el paquete
+                services:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      services_id:
+                        required: false
+                        type: string
+                        summary: Id del servicio a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son los servicios que incluye el paquete
+                products:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      products_id:
+                        required: false
+                        type: string
+                        summary: Id del producto a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son los productos que incluye el paquete
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si el paquete tiene penalización si o no
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Si penalización es si, de debe en viar un array con los ids de las penalizaciones
+                  items:
+                    type: string
+                discount_general:
+                  required: true
+                  type: boolean
+                  summary: Si el paquete tiene descuento general si o no
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Si tiene descuento general es si, este sera el _id del descuento
+                discount_individual:
+                  required: false
+                  type: boolean
+                  summary: Si tiene descuento general es no, este indica si desea aplicar descuentos por individual
+                expiration_date:
+                  required: true
+                  type: string
+                  format: date
+                  summary: Fecha de expiracion del paquete
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Para saber si puede ser para un grupo corporativo si o no
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Para saber si pagos parciales si o no
+                number_days:
+                  required: false
+                  type: integer
+                  summary: si pagos parciales es si, debe de indicarme el numero de dias para pagar
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/packages/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del paquete a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-packages-update
+      tags:
+        - account packages
+      summary: Se actualiza un paquete
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del paquete
+                description:
+                  required: true
+                  type: string
+                  summary: Este es la descripcion del paquete
+                image:
+                  required: false
+                  type: string
+                  summary: Este es la imagen promocional del paquete
+                amount:
+                  required: true
+                  type: integer
+                  summary: Este es el monto del paquete
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Este es el impuesto del paquete
+                class:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      class_id:
+                        required: false
+                        type: string
+                        summary: Id de la clase a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son las clases que incluye el paquete
+                plans:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      plans_id:
+                        required: false
+                        type: string
+                        summary: Id del plan a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son los planes que incluye el paquete
+                areas:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      areas_id:
+                        required: false
+                        type: string
+                        summary: Id del area a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son las areas que incluye el paquete
+                services:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      services_id:
+                        required: false
+                        type: string
+                        summary: Id del servicio a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son los servicios que incluye el paquete
+                products:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      products_id:
+                        required: false
+                        type: string
+                        summary: Id del producto a agregar en el paquete
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Si discount_individual es true,  este sera el _id del descuento
+                  summary: Son los productos que incluye el paquete
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si el paquete tiene penalización si o no
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Si penalización es si, de debe en viar un array con los ids de las penalizaciones
+                  items:
+                    type: string
+                discount_general:
+                  required: true
+                  type: boolean
+                  summary: Si el paquete tiene descuento general si o no
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Si tiene descuento general es si, este sera el _id del descuento
+                discount_individual:
+                  required: false
+                  type: boolean
+                  summary: Si tiene descuento general es no, este indica si desea aplicar descuentos por individual
+                expiration_date:
+                  required: true
+                  type: string
+                  format: date
+                  summary: Fecha de expiracion del paquete
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Para saber si puede ser para un grupo corporativo si o no
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Para saber si pagos parciales si o no
+                number_days:
+                  required: false
+                  type: integer
+                  summary: si pagos parciales es si, debe de indicarme el numero de dias para pagar
+      
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/packages/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del paquete
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-packages-change-status
+      tags:
+        - account packages
+      summary: Para habilidatar o deshabilitar un paquete
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

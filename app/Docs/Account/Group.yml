@@ -1,0 +1,424 @@
+paths:
+  /account/group:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-group-index
+      tags:
+        - account group
+      summary: Para ver todos los grupos habilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/group/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-group-disabled
+      tags:
+        - account group
+      summary: Para ver todas las grupos deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/group/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del grupo a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-group-show
+      tags:
+        - account group
+      summary: Para ver una grupo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/group/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-group-store
+      tags:
+        - account group
+      summary: Crea una nueva grupo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive el grupo
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion del grupo
+                code:
+                  required: true
+                  type: string
+                  summary: Codigo para identificar el grupo
+                corporate:
+                  required: true
+                  type: boolean
+                  summary: para saber si es corporativo o no
+                enterprise_id:
+                  required: false
+                  type: string
+                  summary: Id de la empresa, si este es un grupo corporativo
+                person_id:
+                  required: true
+                  type: string
+                  summary: Id de la persona encargada del grupo
+                schedule_id:
+                  required: false
+                  type: string
+                  summary: Id del horario que recibiran, si reciben un horario
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Id del descuento si recibe un descuento 
+                class:
+                  required: false
+                  type: array
+                  summary: clases que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id de la clase
+                plans:
+                  required: false
+                  type: array
+                  summary: planes que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del plan
+                areas:
+                  required: false
+                  type: array
+                  summary: areas que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id de las areas
+                services:
+                  required: false
+                  type: array
+                  summary: servicios que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del servicio
+                products:
+                  required: false
+                  type: array
+                  summary: productos que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del producto
+                people:
+                  required: true
+                  type: array
+                  summary: personas que conforman el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id de la persona        
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/group/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la grupo a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-group-update
+      tags:
+        - account group
+      summary: Se actualiza una grupo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive el grupo
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion del grupo
+                code:
+                  required: true
+                  type: string
+                  summary: Codigo para identificar el grupo
+                corporate:
+                  required: true
+                  type: boolean
+                  summary: para saber si es corporativo o no
+                enterprise_id:
+                  required: false
+                  type: string
+                  summary: Id de la empresa, si este es un grupo corporativo
+                person_id:
+                  required: true
+                  type: string
+                  summary: Id de la persona encargada del grupo
+                schedule_id:
+                  required: false
+                  type: string
+                  summary: Id del horario que recibiran, si reciben un horario
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Id del descuento si recibe un descuento 
+                class:
+                  required: false
+                  type: array
+                  summary: clases que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id de la clase
+                plans:
+                  required: false
+                  type: array
+                  summary: planes que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del plan
+                areas:
+                  required: false
+                  type: array
+                  summary: areas que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id de las areas
+                services:
+                  required: false
+                  type: array
+                  summary: servicios que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del servicio
+                products:
+                  required: false
+                  type: array
+                  summary: productos que tiene el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del producto
+                people:
+                  required: true
+                  type: array
+                  summary: personas que conforman el grupo
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id de la persona
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/group/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la grupo
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-group-change-status
+      tags:
+        - account group
+      summary: Para habilitar o deshabilitar una grupo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

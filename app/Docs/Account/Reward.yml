@@ -1,0 +1,480 @@
+paths:
+  /account/reward:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-reward-index
+      tags:
+        - account reward
+      summary: Para ver todas las recompensas habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/reward/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-reward-disabled
+      tags:
+        - account reward
+      summary: Para ver todas las recompensas deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/reward/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la recompensas a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-reward-show
+      tags:
+        - account reward
+      summary: Para ver una recompensas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/reward/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-reward-store
+      tags:
+        - account reward
+      summary: Crea una nueva recompensas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la recompensa
+                description:
+                  required: true
+                  type: string
+                  summary: Description de la recompensa
+                type_person:
+                  required: true
+                  type: integer
+                  summary: Se alicaran las recompensas, 0 para clientes, 1 para empleados, 2 para todos
+                group_or_individual:
+                  required: false
+                  type: boolean
+                  summary: Si la opción de type_person es 0, se especifica si es para individuos o para un grupo corporativo
+                rule:
+                  required: true
+                  type: integer
+                  summary: 0 para descuentos, 1 para monetario, 2 para producto, 3 para servicio, 4 para paquetes, 5 para clases, 6 para planes, 7 para otros
+                amount:
+                  required: false
+                  type: integer
+                  summary: si la regla es 1, aquí se especifica el monto de recompensa
+                specify:
+                  required: false
+                  type: string
+                  summary: si la regla es 7, aquí se especifica lo otro que se dará de recompensa
+                discount_all:
+                  required: false
+                  type: boolean
+                  summary: Si la regla es 0, se especifica si afectará a todos los otros datos que se agregaran o se especificará el descuento a cada uno
+                discount_id:
+                  required: false
+                  type: string
+                  summary: si discount_all es true, se especificará el id del descuento a aplicar
+                class:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id de la clase que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para esta clase, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de clases que se gana si la regla es 5
+                service:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del servicio que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este servicio, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de servicio que se gana si la regla es 3
+                package:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id de la paquete que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este paquete, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de paquetes que se gana si la regla es 4
+                plan:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del plan que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este plan, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de planes que se gana si la regla es 6
+                product:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del producto que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este producto, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de producto que se gana si la regla es 2
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/reward/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la recompensas a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-reward-update
+      tags:
+        - account reward
+      summary: Se actualiza una recompensas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la recompensa
+                description:
+                  required: true
+                  type: string
+                  summary: Description de la recompensa
+                type_person:
+                  required: true
+                  type: integer
+                  summary: Se alicaran las recompensas, 0 para clientes, 1 para empleados, 2 para todos
+                group_or_individual:
+                  required: false
+                  type: boolean
+                  summary: Si la opción de type_person es 0, se especifica si es para individuos o para un grupo corporativo
+                rule:
+                  required: true
+                  type: integer
+                  summary: 0 para descuentos, 1 para monetario, 2 para producto, 3 para servicio, 4 para paquetes, 5 para clases, 6 para planes, 7 para otros
+                amount:
+                  required: false
+                  type: integer
+                  summary: si la regla es 1, aquí se especifica el monto de recompensa
+                specify:
+                  required: false
+                  type: string
+                  summary: si la regla es 7, aquí se especifica lo otro que se dará de recompensa
+                discount_all:
+                  required: false
+                  type: boolean
+                  summary: Si la regla es 0, se especifica si afectará a todos los otros datos que se agregaran o se especificará el descuento a cada uno
+                discount_id:
+                  required: false
+                  type: string
+                  summary: si discount_all es true, se especificará el id del descuento a aplicar
+                class:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id de la clase que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para esta clase, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de clases que se gana si la regla es 5
+                service:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del servicio que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este servicio, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de servicio que se gana si la regla es 3
+                package:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id de la paquete que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este paquete, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de paquetes que se gana si la regla es 4
+                plan:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del plan que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este plan, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de planes que se gana si la regla es 6
+                product:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del producto que se escoge
+                      discount_id:
+                        required: false
+                        type: string
+                        summary: Id del descuento que se escoge para este producto, si discount_all es false
+                      quantity: 
+                        required: false
+                        type: integer
+                        summary: cantidad de producto que se gana si la regla es 2
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/reward/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la recompensas
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-reward-change-status
+      tags:
+        - account reward
+      summary: Para habilidatar o deshabilitar una recompensas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+ 

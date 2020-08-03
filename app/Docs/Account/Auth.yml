@@ -1,0 +1,21 @@
+paths:
+  /account:
+    get:
+      operationId: account
+      tags:
+        - account user
+      summary: Retorna la información de usuario autenticado
+      responses:
+        200:
+          description: success
+
+  /account/logout:
+    post:
+      operationId: account-logout
+      tags:
+        - account user
+      summary: Cierra la session del usuario autenticado
+      responses:
+        200:
+          description: success
+    

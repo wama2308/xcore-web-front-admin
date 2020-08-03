@@ -1,0 +1,477 @@
+paths:
+  /account/service:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service
+      tags:
+        - account service
+      summary: Ver todos los servicios dentro de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+  
+  /account/service/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service-disabled
+      tags:
+        - account service
+      summary: Ver todos los servicios deshabilitados dentro de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/service/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service-select
+      tags:
+        - account service
+      summary: Select de servicios
+      responses:
+        200:
+          description: success
+
+  /account/service/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del servicio a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service-show
+      tags:
+        - account service
+      summary: Ver un servicio espesifico
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/service/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service-store
+      tags:
+        - account service
+      summary: Crear un servicio nuevo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre del servicio
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion del servicio
+                amount:
+                  required: true
+                  type: number
+                  summary: Monto del servicio
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que conlleva el servicio
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que lleva el servicio
+                quotas:
+                  required: true
+                  type: number
+                  summary: Cantidad de seciones del servicio
+                screens:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las pantallas que estaran disponibles en este servicio
+                  items:
+                    type: string
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Si pertenece o no a un grupo corporativo
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: Un horario en el cual estará disponible
+                gifted_service:
+                  required: true
+                  type: number
+                  summary: Cantidad de servicios maximos a regalar/obsequiar
+                cumulative_service:
+                  required: true
+                  type: number
+                  summary: Cantidad maxima de servicios acumulados
+                reserve:
+                  required: true
+                  type: boolean
+                  summary: Si es reservable o no
+                type_reserve:
+                  required: false
+                  type: object
+                  properties:
+                    web:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la web
+                    movil:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la app movil
+                    branch:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la sucursal
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva penalizaciones o no
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las penalizaciones que pueda llevar
+                  items:
+                    type: string
+                icon:
+                  required: true
+                  type: string
+                  summary: Icono a mostrar del servicio
+                name_icon:
+                  required: true
+                  type: string
+                  summary: Nombre del icono a mostrar
+                expiration:
+                  required: true
+                  type: boolean
+                  summary: Si el servicio expira o no
+                expiration_date:
+                  required: false
+                  type: string
+                  summary: Fecha de expiracion del servicio
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales o no
+                days_partial_payments:
+                  required: false
+                  type: number
+                  summary: Numero de dias maximo entre pagos
+                additional_day:
+                  required: true
+                  type: boolean
+                  summary: Si se podrá acceder a un día adicional o no
+                amount_additional_day:
+                  required: false
+                  type: integer
+                  summary: Monto del día adicional
+                additional_day_array:
+                  required: false
+                  type: array
+                  summary: Array plano con los días que van a ser de reconocidos como adicionales
+                  items:
+                    type: string
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/service/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del servicio a actualizar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service-update
+      tags:
+        - account service
+      summary: Editar un servicio ya creado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre del servicio
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion del servicio
+                amount:
+                  required: true
+                  type: number
+                  summary: Monto del servicio
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que conlleva el servicio
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que lleva el servicio
+                quotas:
+                  required: true
+                  type: number
+                  summary: Cantidad de seciones del servicio
+                screens:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las pantallas que estaran disponibles en este servicio
+                  items:
+                    type: string
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Si pertenece o no a un grupo corporativo
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: Un horario en el cual estará disponible
+                gifted_service:
+                  required: true
+                  type: number
+                  summary: Cantidad de servicios maximos a regalar/obsequiar
+                cumulative_service:
+                  required: true
+                  type: number
+                  summary: Cantidad maxima de servicios acumulados
+                reserve:
+                  required: true
+                  type: boolean
+                  summary: Si es reservable o no
+                type_reserve:
+                  required: false
+                  type: object
+                  properties:
+                    web:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la web
+                    movil:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la app movil
+                    branch:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la sucursal
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva penalizaciones o no
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las penalizaciones que pueda llevar
+                  items:
+                    type: string
+                icon:
+                  required: true
+                  type: string
+                  summary: Icono a mostrar del servicio
+                name_icon:
+                  required: true
+                  type: string
+                  summary: Nombre del icono a mostrar
+                expiration:
+                  required: true
+                  type: boolean
+                  summary: Si el servicio expira o no
+                expiration_date:
+                  required: false
+                  type: string
+                  summary: Fecha de expiracion del servicio
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales o no
+                days_partial_payments:
+                  required: false
+                  type: number
+                  summary: Numero de dias maximo entre pagos
+                additional_day:
+                  required: true
+                  type: boolean
+                  summary: Si se podrá acceder a un día adicional o no
+                amount_additional_day:
+                  required: false
+                  type: integer
+                  summary: Monto del día adicional
+                additional_day_array:
+                  required: false
+                  type: array
+                  summary: Array plano con los días que van a ser de reconocidos como adicionales
+                  items:
+                    type: string
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/service/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del servicio a habilitar o deshabilitar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: service-change-status
+      tags:
+        - account service
+      summary: Deshabilita o habilita un servicio
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+            

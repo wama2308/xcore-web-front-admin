@@ -1,0 +1,312 @@
+paths:
+  /account/phone/store/{person_id}:
+    post:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona donde se creará el nuevo telefono
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-phone-store
+      tags:
+        - account person phone
+      summary: Crea un nuevo telefono
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  required: true
+                  type: boolean
+                  summary: El tipo de telefono, si es el principal o el secundario
+                emergency:
+                  required: true
+                  type: boolean
+                  summary: Si es de emergencias o no
+                number:
+                  required: true
+                  type: string
+                  summary: Numero de telefono
+                name:
+                  required: false
+                  type: string
+                  summary: Nombres del contacto de emergencia (requerido solo si emergency es true)
+                surnames:
+                  required: false
+                  type: string
+                  summary: Apellidos del contacto de emergencia (requerido solo si emergency es true)
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/phone/update/{person_id}/{_id}:
+    put:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona, en donde esta el telefono
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id del telefono a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-phone-update
+      tags:
+        - account person phone
+      summary: Se actualiza un telefono 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  required: true
+                  type: boolean
+                  summary: El tipo de telefono, si es el principal o el secundario
+                emergency:
+                  required: true
+                  type: boolean
+                  summary: Si es de emergencias o no
+                number:
+                  required: true
+                  type: string
+                  summary: Numero de telefono
+                name:
+                  required: false
+                  type: string
+                  summary: Nombres del contacto de emergencia (requerido solo si emergency es true)
+                surnames:
+                  required: false
+                  type: string
+                  summary: Apellidos del contacto de emergencia (requerido solo si emergency es true)
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/phone/change-status/{person_id}/{_id}:
+    put:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona, en donde esta el telefono
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id del telefono
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-phone-change-status
+      tags:
+        - account person phone
+      summary: Para habilitar o deshabilitar un telefono
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/phone/store-enterprise/{enterprise_id}:  
+    post:
+      parameters:
+      - name: enterprise_id
+        in: path
+        description: Id de la empresa donde se creará el nuevo telefono
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-phone-store-enterprise
+      tags:
+        - account enterprise phone
+      summary: Crea un nuevo telefono
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  required: true
+                  type: boolean
+                  summary: El tipo de telefono, si es el principal o el secundario
+                number:
+                  required: true
+                  type: string
+                  summary: Numero de telefono
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/phone/update-enterprise/{enterprise_id}/{_id}:
+    put:
+      parameters:
+      - name: enterprise_id
+        in: path
+        description: Id de la empresa, en donde esta el telefono
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id del telefono a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-phone-update-enterprise
+      tags:
+        - account enterprise phone
+      summary: Se actualiza un telefono 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                type:
+                  required: true
+                  type: boolean
+                  summary: El tipo de telefono, si es el principal o el secundario
+                number:
+                  required: true
+                  type: string
+                  summary: Numero de telefono
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/phone/change-status-enterprise/{enterprise_id}/{_id}:
+    put:
+      parameters:
+      - name: enterprise_id
+        in: path
+        description: Id de la empresa, en donde esta el telefono
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id del telefono
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-phone-change-status-enterprise
+      tags:
+        - account enterprise phone
+      summary: Para habilitar o deshabilitar un telefono
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados

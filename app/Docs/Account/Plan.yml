@@ -1,0 +1,483 @@
+paths:
+  /account/plan:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-plan-index
+      tags:
+        - account plan
+      summary: Para ver todos los planes habilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/plan/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-plan-disabled
+      tags:
+        - account plan
+      summary: Para ver todos los planes deshabilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/plan/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: plan-select
+      tags:
+        - account plan
+      summary: Select de plan
+      responses:
+        200:
+          description: success
+
+  /account/plan/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del plan a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-plan-show
+      tags:
+        - account plan
+      summary: Para ver una plan
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/plan/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-plan-store
+      tags:
+        - account plan
+      summary: Crea una nueva plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive el plan
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion que tendrá el plan
+                amount:
+                  required: true
+                  type: integer
+                  summary: Monto del plan
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que conlleva
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que lleva el plan
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: Horario del Plan
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Si pertenece a un grupo corporativo o no
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva o no penalizaciones
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Tipo de penalizaciones que conlleva
+                  items:
+                    type: string
+                    summary: Aqui van los id de todas las penalizaciones que conlleve
+                cycle:
+                  required: true
+                  type: boolean
+                  summary: Ciclo mensual o diario
+                time_cycle:
+                  required: true
+                  type: integer
+                  summary: Tiempo del ciclo, dias o meses
+                date_change:
+                  required: true
+                  type: boolean
+                  summary: Si va a ser con fecha cambiante o no la fecha de vencimiento del plan
+                expiration:
+                  required: true
+                  type: boolean
+                  summary: Si expira en una fecha o no
+                expiration_date:
+                  required: false
+                  type: string
+                  summary: Fecha en la que expira
+                additional_day:
+                  required: true
+                  type: boolean
+                  summary: Si se podrá acceder a un día adicional o no
+                amount_additional_day:
+                  required: false
+                  type: integer
+                  summary: Monto del día adicional
+                additional_day_array:
+                  required: false
+                  type: array
+                  summary: Array plano con los días que van a ser de reconocidos como adicionales
+                  items:
+                    type: string
+                flexibility:
+                  required: true
+                  type: boolean
+                  summary: Si tendrá o no flexibilidad en el pago
+                flexibility_day:
+                  required: false
+                  type: integer
+                  summary: Dias de intervalo máximo para el pago
+                locker:
+                  required: true
+                  type: boolean
+                  summary: Si tendrá o no un armario/locker
+                amount_locker:
+                  required: false
+                  type: integer
+                  summary: Monto que tendrá el armario/locker 
+                attendance_limit:
+                  required: true
+                  type: boolean
+                  summary: Si tendrá o no un limite de entradas
+                type_limit:
+                  required: false
+                  type: boolean
+                  summary: Tipo de limite en entradas, mensual o anual
+                limit_amount:
+                  required: false
+                  type: integer
+                  summary: Cantidad maxima permitida en la entrada
+                inscription:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva o no un monto de inscription
+                amount_inscription:
+                  required: false
+                  type: integer
+                  summary: Monto de la inscription que conlleve
+                partial_payments:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales o no 
+                days_partial_payments:
+                  required: false
+                  type: integer
+                  summary: Dias maximos permitidos entre pagos parciales
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/plan/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del plan a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-plan-update
+      tags:
+        - account plan
+      summary: Se actualiza un plan
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive el plan
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion que tendrá el plan
+                amount:
+                  required: true
+                  type: integer
+                  summary: Monto del plan
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que conlleva
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que lleva el plan
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: Horario del Plan
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Si pertenece a un grupo corporativo o no
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva o no penalizaciones
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Tipo de penalizaciones que conlleva
+                  items:
+                    type: string
+                    summary: Aqui van los id de todas las penalizaciones que conlleve
+                cycle:
+                  required: true
+                  type: boolean
+                  summary: Ciclo mensual o diario
+                time_cycle:
+                  required: true
+                  type: integer
+                  summary: Tiempo del ciclo, dias o meses
+                date_change:
+                  required: true
+                  type: boolean
+                  summary: Si va a ser con fecha cambiante o no la fecha de vencimiento del plan
+                expiration:
+                  required: true
+                  type: boolean
+                  summary: Si expira en una fecha o no
+                expiration_date:
+                  required: false
+                  type: string
+                  summary: Fecha en la que expira
+                additional_day:
+                  required: true
+                  type: boolean
+                  summary: Si se podrá acceder a un día adicional o no
+                amount_additional_day:
+                  required: false
+                  type: integer
+                  summary: Monto del día adicional
+                additional_day_array:
+                  required: false
+                  type: array
+                  summary: Array plano con los días que van a ser de reconocidos como adicionales
+                  items:
+                    type: string
+                flexibility:
+                  required: true
+                  type: boolean
+                  summary: Si tendrá o no flexibilidad en el pago
+                flexibility_day:
+                  required: false
+                  type: integer
+                  summary: Dias de intervalo máximo para el pago
+                locker:
+                  required: true
+                  type: boolean
+                  summary: Si tendrá o no un armario/locker
+                amount_locker:
+                  required: false
+                  type: integer
+                  summary: Monto que tendrá el armario/locker 
+                attendance_limit:
+                  required: true
+                  type: boolean
+                  summary: Si tendrá o no un limite de entradas
+                type_limit:
+                  required: false
+                  type: boolean
+                  summary: Tipo de limite en entradas, mensual o anual
+                limit_amount:
+                  required: false
+                  type: integer
+                  summary: Cantidad maxima permitida en la entrada
+                inscription:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva o no un monto de inscription
+                amount_inscription:
+                  required: false
+                  type: integer
+                  summary: Monto de la inscription que conlleve
+                partial_payments:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales o no 
+                days_partial_payments:
+                  required: false
+                  type: integer
+                  summary: Dias maximos permitidos entre pagos parciales
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/plan/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del plan
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-plan-change-status
+      tags:
+        - account plan
+      summary: Para habilidatar o deshabilitar un plan
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

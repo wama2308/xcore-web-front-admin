@@ -1,0 +1,481 @@
+paths:
+  /account/class:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-index
+      tags:
+        - account class
+      summary: Para ver todas las clases habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/class/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-disabled
+      tags:
+        - account class
+      summary: Para ver todas las clases deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/class/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: class-select
+      tags:
+        - account class
+      summary: Select de clases
+      responses:
+        200:
+          description: success
+
+  /account/class/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la clase a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-show
+      tags:
+        - account class
+      summary: Para ver una clase
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/class/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-store
+      tags:
+        - account class
+      summary: Crea una nueva clase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que lleva la clase
+                description:
+                  required: true
+                  type: string
+                  summary: Description que lleva la clase
+                reserve:
+                  required: true
+                  type: boolean
+                  summary: Si es reservable o no
+                type_reserve:
+                  required: false
+                  type: object
+                  properties:
+                    web:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la web
+                    movil:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la app movil
+                    branch:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la sucursal
+                amount:
+                  required: true
+                  type: integer
+                  summary: Monto de la clase
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que lleva la clase
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que lleva la clase
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: Horario de la clase
+                screens:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las pantallas que estaran disponibles en esa clase
+                  items:
+                    type: string
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva penalizaciones o no
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las penalizaciones que pueda llevar
+                  items:
+                    type: string
+                quotas:
+                  required: true
+                  type: integer
+                  summary: Numero de maximo de alumnos permitidos
+                cumulative_class:
+                  required: true
+                  type: integer
+                  summary: Clases maximas acumuladas permitidas por cliente
+                gifted_class:
+                  required: true
+                  type: integer
+                  summary: Clases a regalar maximas permitidas por cliente
+                icon:
+                  required: true
+                  type: string
+                  summary: Icono que lleva la clase a mostrar
+                name_icon:
+                  required: true
+                  type: string
+                  summary: Nombre del icono a mostrar
+                expiration_cycle:
+                  required: true
+                  type: boolean
+                  summary: Si expira mensual o diario
+                expiration_time:
+                  required: false
+                  type: integer
+                  summary: Tiempo de expiracion 
+                inscription:
+                  required: true
+                  type: boolean
+                  summary: Si requiere un pago de inscription
+                amount_inscription:
+                  required: false
+                  type: integer
+                  summary: Monto de la inscription
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Si pertenece a un grupo corporativo o no
+                multiple_assistance:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten o no multiple asistencia en el trancurso del día
+                number_class:
+                  required: true
+                  type: integer
+                  summary: Cantidad de Clases que se dictaran 
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales o no
+                number_days:
+                  required: false
+                  type: integer
+                  summary: Numero de dias maximo entre pagos
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/class/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la clase a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-update
+      tags:
+        - account class
+      summary: Se actualiza una clase
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que lleva la clase
+                description:
+                  required: true
+                  type: string
+                  summary: Description que lleva la clase
+                reserve:
+                  required: true
+                  type: boolean
+                  summary: Si es una clase reservable o no
+                type_reserve:
+                  required: false
+                  type: object
+                  properties:
+                    web:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la web
+                    movil:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la app movil
+                    branch:
+                      required: true
+                      type: boolean
+                      summary: Si es reservable desde la sucursal
+                amount:
+                  required: true
+                  type: integer
+                  summary: Monto de la clase
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que lleva la clase
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que lleva la clase
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: Horario de la clase
+                screens:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las pantallas que estaran disponibles en esa clase
+                  items:
+                    type: string
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva penalizaciones o no
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los id de las penalizaciones que pueda llevar
+                  items:
+                    type: string
+                quotas:
+                  required: true
+                  type: integer
+                  summary: Numero de maximo de alumnos permitidos
+                cumulative_class:
+                  required: true
+                  type: integer
+                  summary: Clases maximas acumuladas permitidas por cliente
+                gifted_class:
+                  required: true
+                  type: integer
+                  summary: Clases a regalar maximas permitidas por cliente
+                icon:
+                  required: true
+                  type: string
+                  summary: Icono que lleva la clase a mostrar
+                name_icon:
+                  required: true
+                  type: string
+                  summary: Nombre del icono a mostrar
+                expiration_cycle:
+                  required: true
+                  type: boolean
+                  summary: Si expira mensual o diario
+                expiration_time:
+                  required: false
+                  type: integer
+                  summary: Tiempo de expiracion 
+                inscription:
+                  required: true
+                  type: boolean
+                  summary: Si requiere un pago de inscription
+                amount_inscription:
+                  required: false
+                  type: integer
+                  summary: Monto de la inscription
+                corporate_group:
+                  required: true
+                  type: boolean
+                  summary: Si pertenece a un grupo corporativo o no
+                multiple_assistance:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten o no multiple asistencia en el trancurso del día
+                number_class:
+                  required: true
+                  type: integer
+                  summary: Cantidad de Clases que se dictaran 
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales o no
+                number_days:
+                  required: false
+                  type: integer
+                  summary: Numero de dias maximo entre pagos
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/class/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la clase
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-change-status
+      tags:
+        - account class
+      summary: Para habilidatar o deshabilitar una clase
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

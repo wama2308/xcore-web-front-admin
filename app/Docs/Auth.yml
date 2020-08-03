@@ -1,0 +1,142 @@
+paths:
+  /auth/generate-code:
+    post:
+      operationId: generate-code
+      tags:
+        - auth
+      summary: Generar código de verificación de email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+      responses:
+        200:
+          description: success
+  
+  /auth/virify-code:
+    post:
+      operationId: virify-code
+      tags:
+        - auth
+      summary: Verifica el código para activar email
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+                code:
+                  required: false
+                  type: string
+      responses:
+        200:
+          description: success
+  
+  /auth/login:
+    post:
+      operationId: login
+      tags:
+        - auth
+      summary: Inicia sesión de usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+                password:
+                  required: false
+                  type: string
+      responses:
+        200:
+          description: success
+
+  /auth/recovery-password:
+    post:
+      operationId: recoveryPassword
+      tags:
+        - auth
+      summary: Envio de codigo para la recuperacion de contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+      responses:
+        200:
+          description: success
+
+  /auth/verify-code-recovery-password:
+    post:
+      operationId: verifyCodeRecoveryPassword
+      tags:
+        - auth
+      summary: Verificacion de código para la recuperacion de contraseña
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+                code:
+                  required: true
+                  type: string
+      responses:
+        200:
+          description: success
+  
+  /auth/change-password-recovery:
+    post:
+      operationId: changePasswordRecovery
+      tags:
+        - auth
+      summary: Cambio de contraseña en recuperación
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+                password:
+                  required: true
+                  type: string
+                password_confirmation:
+                  required: true
+                  type: string
+      responses:
+        200:
+          description: success
+          

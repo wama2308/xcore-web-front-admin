@@ -1,0 +1,276 @@
+paths:
+  /account/term:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-term-index
+      tags:
+        - account term
+      summary: Para ver todas las condiciones habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/term/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-term-disabled
+      tags:
+        - account term
+      summary: Para ver todas las condiciones deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/term/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la condiciones a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-term-show
+      tags:
+        - account term
+      summary: Para ver una condiciones
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/term/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-term-store
+      tags:
+        - account term
+      summary: Crea una nueva condiciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ruler_id:
+                  required: true
+                  type: string
+                  summary: Identificador de la regla que se usará con esta condicion
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la condicion
+                description:
+                  required: true
+                  type: string
+                  summary: description de la condicion
+                percentage:
+                  required: true
+                  type: boolean
+                  summary: Selecciona si es porcentaje (true) o por monto (false)
+                amount:
+                  required: true
+                  type: integer
+                  summary: Se carga el monto o el porsentaje
+                quantity:
+                  required: true
+                  type: integer
+                  summary: La cantidad para las condiciones
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/term/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la condiciones a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-term-update
+      tags:
+        - account term
+      summary: Se actualiza una condiciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ruler_id:
+                  required: true
+                  type: string
+                  summary: Identificador de la regla que se usará con esta condicion
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la condicion
+                description:
+                  required: true
+                  type: string
+                  summary: description de la condicion
+                percentage:
+                  required: true
+                  type: boolean
+                  summary: Selecciona si es porcentaje (true) o por monto (false)
+                amount:
+                  required: true
+                  type: integer
+                  summary: Se carga el monto o el porsentaje
+                quantity:
+                  required: true
+                  type: integer
+                  summary: La cantidad para las condiciones
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/term/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la condiciones
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-term-change-status
+      tags:
+        - account term
+      summary: Para habilidatar o deshabilitar una condiciones
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+ 

@@ -1,0 +1,485 @@
+paths:
+  /account/discounts:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del descuento actual
+        required: true
+        type: string
+      operationId: account-discounts-index
+      tags:
+        - account discounts
+      summary: Para ver todos los descuentos habilitados de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/discounts/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del descuento actual
+        required: true
+        type: string
+      operationId: account-discounts-disabled
+      tags:
+        - account discounts
+      summary: Para ver todos los descuentos deshabilitados de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/discounts/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: discounts-select
+      tags:
+        - account discounts
+      summary: Select de descuentos
+      responses:
+        200:
+          description: success
+
+  /account/discounts/is-all:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: discounts-is-all
+      tags:
+        - account discounts
+      summary: Retorna los descuentos que estan aplicados en todos los items de una sucursal 
+      responses:
+        200:
+          description: success
+
+  /account/discounts/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del descuento actual
+        required: true
+        type: string
+      operationId: account-class-store
+      tags:
+        - account discounts
+      summary: Crea un descuento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del descuento
+                type:
+                  required: true
+                  type: string
+                  summary: tipo de descuento (percentage || amount)
+                value:
+                  required: true
+                  type: number
+                  summary: valor del descuento
+                start_date:
+                  required: true
+                  type: string
+                  summary: Fecha de inicio del descuento
+                final_date:
+                  required: true
+                  type: string
+                  summary: Fecha de final del descuento
+                class:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      class_id:
+                        required: false
+                        type: string
+                        summary: Id de la clase a agregar descuento
+                  summary: Son las clases que incluye el descuento
+                all_class:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todas las clases
+                plans:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      plans_id:
+                        required: false
+                        type: string
+                        summary: Id del plan a agregar descuento
+                  summary: Son los planes que incluye el descuento
+                all_plans:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los planes
+                areas:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      areas_id:
+                        required: false
+                        type: string
+                        summary: Id del area a agregar descuento
+                all_areas:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todas las areas
+                services:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      services_id:
+                        required: false
+                        type: string
+                        summary: Id del servicio a agregar descuento
+                  summary: Son los servicios que incluye el descuento
+                all_services:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los servicios
+                products:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      products_id:
+                        required: false
+                        type: string
+                        summary: Id del producto a agregar descuento
+                  summary: Son los productos que incluye el descuento
+                all_products:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los productos
+                packages:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      packages_id:
+                        required: false
+                        type: string
+                        summary: Id del paquetes a agregar descuento
+                  summary: Son los paquetess que incluye el descuento
+                all_packages:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los paquetes
+                
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/discounts/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la del descuento
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-discounts-show
+      tags:
+        - account discounts
+      summary: Ver datos de un descuento
+      responses:
+        200:
+          description: success
+
+  /account/discounts/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la del descuento
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-update
+      tags:
+        - account discounts
+      summary: Edita un descuento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del descuento
+                type:
+                  required: true
+                  type: string
+                  summary: tipo de descuento (percentage || amount)
+                value:
+                  required: true
+                  type: number
+                  summary: valor del descuento
+                start_date:
+                  required: true
+                  type: string
+                  summary: Fecha de inicio del descuento
+                final_date:
+                  required: true
+                  type: string
+                  summary: Fecha de final del descuento
+                class:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      class_id:
+                        required: false
+                        type: string
+                        summary: Id de la clase a agregar descuento
+                  summary: Son las clases que incluye el descuento
+                all_class:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todas las clases
+                plans:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      plans_id:
+                        required: false
+                        type: string
+                        summary: Id del plan a agregar descuento
+                  summary: Son los planes que incluye el descuento
+                all_plans:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los planes
+                areas:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      areas_id:
+                        required: false
+                        type: string
+                        summary: Id del area a agregar descuento
+                all_areas:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todas las areas
+                services:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      services_id:
+                        required: false
+                        type: string
+                        summary: Id del servicio a agregar descuento
+                  summary: Son los servicios que incluye el descuento
+                all_services:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los servicios
+                products:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      products_id:
+                        required: false
+                        type: string
+                        summary: Id del producto a agregar descuento
+                  summary: Son los productos que incluye el descuento
+                all_products:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los productos
+                packages:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      packages_id:
+                        required: false
+                        type: string
+                        summary: Id del paquetes a agregar descuento
+                  summary: Son los paquetess que incluye el descuento
+                all_packages:
+                  required: true
+                  type: boolean
+                  summary: Si el descuento se aplicara a todos los paquetes
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/discounts/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del area
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del descuento actual
+        required: true
+        type: string
+      operationId: account-discounts-change-status
+      tags:
+        - account discounts
+      summary: Para habilidatar o deshabilitar un descuento
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

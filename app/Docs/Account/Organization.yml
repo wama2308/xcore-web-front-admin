@@ -1,0 +1,25 @@
+paths:
+  /account/organizations:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del cargo actual
+        required: true
+        type: string
+      operationId: account-organizations-index
+      tags:
+        - account organizations
+      summary: Para ver organigrama de negocios de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos

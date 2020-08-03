@@ -1,0 +1,216 @@
+paths:
+  /back-end/category:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      operationId: category-index
+      tags:
+        - BackEnd category
+      summary: Para ver todas las categorias habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /back-end/category/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      operationId: category-disabled
+      tags:
+        - BackEnd category
+      summary: Para ver todas las categorias deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /back-end/category/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la categoria a ver
+        required: true
+        type: string
+      operationId: category-show
+      tags:
+        - BackEnd category
+      summary: Para ver una categoria
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/category/store:
+    post:
+      parameters:
+      operationId: category-store
+      tags:
+        - BackEnd category
+      summary: Crea una nueva categoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recibe la categoria
+                menu_title:
+                  required: true
+                  type: string
+                  summary: Titulo de menu
+                menu_icon:
+                  required: true
+                  type: string
+                  summary: Icono que lleva la categoria
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion de la categoria
+                new_item:
+                  required: true
+                  type: boolean
+                  summary: Si es un nuevo item para el menú o no
+                type_multi:
+                  required: true
+                  type: string
+                  summary: Si es multi o no
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/category/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la categoria a editar
+        required: true
+        type: string
+      operationId: category-update
+      tags:
+        - BackEnd category
+      summary: Se edita una categoria
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recibe la categoria
+                menu_title:
+                  required: true
+                  type: string
+                  summary: Titulo de menu
+                menu_icon:
+                  required: true
+                  type: string
+                  summary: Icono que lleva la categoria
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion de la categoria
+                new_item:
+                  required: true
+                  type: boolean
+                  summary: Si es un nuevo item para el menú o no
+                type_multi:
+                  required: true
+                  type: string
+                  summary: Si es multi o no
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/category/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la categoria
+        required: true
+        type: string
+      operationId: category-change-status
+      tags:
+        - BackEnd category
+      summary: Para habilidatar o deshabilitar una categoria
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

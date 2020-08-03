@@ -1,0 +1,208 @@
+paths:
+  /back-end/module:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      operationId: module-index
+      tags:
+        - BackEnd module
+      summary: Para ver todos los modulo habilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /back-end/module/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      operationId: module-disabled
+      tags:
+        - BackEnd module
+      summary: Para ver todos los modulos deshabilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /back-end/module/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del modulo a ver
+        required: true
+        type: string
+      operationId: module-show
+      tags:
+        - BackEnd module
+      summary: Para ver un modulo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/module/store:
+    post:
+      parameters:
+      operationId: module-store
+      tags:
+        - BackEnd module
+      summary: Crea un nuevo modulo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recibe el modulo
+                menu_title:
+                  required: true
+                  type: string
+                  summary: Titulo de menu
+                new_item:
+                  required: true
+                  type: boolean
+                  summary: Si es un nuevo item para el menú o no
+                path:
+                  required: true
+                  type: string
+                  summary: Ruta del modulo
+                category_id:
+                  required: true
+                  type: string
+                  summary: Id de la categoria a la que pertenece el modulo
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/module/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del modulo a editar
+        required: true
+        type: string
+      operationId: module-update
+      tags:
+        - BackEnd module
+      summary: Se edita un modulo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recibe el modulo
+                menu_title:
+                  required: true
+                  type: string
+                  summary: Titulo de menu
+                new_item:
+                  required: true
+                  type: boolean
+                  summary: Si es un nuevo item para el menú o no
+                path:
+                  required: true
+                  type: string
+                  summary: Ruta del modulo
+                category_id:
+                  required: true
+                  type: string
+                  summary: Id de la categoria a la que pertenece el modulo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/module/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del modulo
+        required: true
+        type: string
+      operationId: module-change-status
+      tags:
+        - BackEnd module
+      summary: Para habilidatar o deshabilitar un modulo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

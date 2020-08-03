@@ -1,0 +1,507 @@
+paths:
+  /account/areas:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-areas-index
+      tags:
+        - account areas
+      summary: Para ver todas las areas habilitadas de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/areas/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-areas-disabled
+      tags:
+        - account areas
+      summary: Para ver todas las areas deshabilitadas de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/areas/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: areas-select
+      tags:
+        - account areas
+      summary: Select de areas
+      responses:
+        200:
+          description: success
+
+  /account/areas/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-class-store
+      tags:
+        - account areas
+      summary: Crea un area
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  required: true
+                  type: string
+                  summary: Es la cantidad de areas a crear
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del area
+                description:
+                  required: true
+                  type: string
+                  summary: Aquí va una descripcion
+                required_manager:
+                  required: true
+                  type: boolean
+                  summary: Si requiere un gerente o no
+                manager:
+                  required: false
+                  type: string
+                  summary: ID del gerente si lleva un gerente
+                reserve:
+                  required: true
+                  type: boolean
+                  summary: Si se puede o no reservar
+                type_reserve:
+                  required: false
+                  type: object
+                  properties:
+                    web:
+                      required: false
+                      type: boolean
+                    movil:
+                      required: false
+                      type: boolean
+                    branch:
+                      required: false
+                      type: boolean
+                photos:
+                  required: true
+                  summary: Fotos del area
+                  type: array
+                  items:
+                    type: string
+                icon:
+                  required: true
+                  type: string
+                  summary: Icono que se le colocara al area
+                name_icon:
+                  required: true
+                  type: string
+                  summary: Nombre que se colocara para identificar el icono del area
+                capacity:
+                  required: true
+                  type: number
+                  summary: Capacidad maxima de personas que pueden usar el area
+                gift_areas:
+                  required: true
+                  type: number
+                  summary: Si son obsequiables las areas y cuantas
+                amount:
+                  required: true
+                  type: number
+                  summary: Monto para el area
+                phone:
+                  required: true
+                  type: array
+                  summary: Telefonos de contacto
+                  items:
+                    type: string
+                    summary: Numero de telefono para el contacto
+                internal:
+                  required: true
+                  type: boolean
+                  summary: Si esta dentro o no de la sucursal
+                location:
+                  required: false
+                  type: array
+                  summary: Localizacion de las areas por el mapa si es interna
+                  items:
+                    type: number
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva penalizaciones
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Tipos de penalizaciones
+                  items:
+                    type: string
+                required_maintenance:
+                  required: true
+                  type: boolean
+                  summary: Si requiere mantenimiento
+                maintenance_time:
+                  required: false
+                  type: string
+                  summary: Tiempo de mantenimiento si su mantenimiento es requerido
+                responsible_maintenance:
+                  required: false
+                  type: string
+                  summary: Responsable del mantenimiento si su mantenimiento es requerido
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: ID del horario de funcionamiento
+                tax_id:
+                  required: true
+                  type: string
+                  summary: ID del impuesto que lleva el area
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales
+                number_days:
+                  required: false
+                  type: integer
+                  summary: Numero de Dias permitidos para los pagos parciales
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Es el descuento que puede tener el area
+                goods:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      goods_id:
+                        required: true
+                        type: string
+                        summary: Es el ID del bien
+                      quantity:
+                        required: true
+                        type: string
+                        summary: Es la cantidad de ese bien que tiene el area
+                  summary: Son los bienes que tiene el area
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/areas/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la de la sucursal
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-areas-show
+      tags:
+        - account areas
+      summary: Ver datos de un area
+      responses:
+        200:
+          description: success
+
+  /account/areas/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la de la sucursal
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-class-update
+      tags:
+        - account areas
+      summary: Edita un area
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  required: true
+                  type: string
+                  summary: Es la cantidad de areas a crear
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del area
+                description:
+                  required: true
+                  type: string
+                  summary: Aquí va una descripcion
+                required_manager:
+                  required: true
+                  type: boolean
+                  summary: Si requiere un gerente o no
+                manager:
+                  required: false
+                  type: string
+                  summary: ID del gerente si lleva un gerente
+                reserve:
+                  required: true
+                  type: boolean
+                  summary: Si se puede o no reservar
+                type_reserve:
+                  required: false
+                  type: object
+                  properties:
+                    web:
+                      required: false
+                      type: boolean
+                    movil:
+                      required: false
+                      type: boolean
+                    branch:
+                      required: false
+                      type: boolean
+                photos:
+                  required: true
+                  summary: Fotos del area
+                  type: array
+                  items:
+                    type: string
+                icon:
+                  required: true
+                  type: string
+                  summary: Icono que se le colocara al area
+                name_icon:
+                  required: true
+                  type: string
+                  summary: Nombre que se colocara para identificar el icono del area
+                capacity:
+                  required: true
+                  type: number
+                  summary: Capacidad maxima de personas que pueden usar el area
+                gift_areas:
+                  required: true
+                  type: number
+                  summary: Si son obsequiables las areas y cuantas
+                amount:
+                  required: true
+                  type: number
+                  summary: Monto para el area
+                phone:
+                  required: true
+                  type: array
+                  summary: Telefonos de contacto
+                  items:
+                    type: string
+                    summary: Numero de telefono para el contacto
+                internal:
+                  required: true
+                  type: boolean
+                  summary: Si esta dentro o no de la sucursal
+                location:
+                  required: false
+                  type: array
+                  summary: Localizacion de las areas por el mapa si es interna
+                  items:
+                    type: number
+                penalty:
+                  required: true
+                  type: boolean
+                  summary: Si conlleva penalizaciones
+                type_penalties:
+                  required: false
+                  type: array
+                  summary: Tipos de penalizaciones
+                  items:
+                    type: string
+                required_maintenance:
+                  required: true
+                  type: boolean
+                  summary: Si requiere mantenimiento
+                maintenance_time:
+                  required: false
+                  type: string
+                  summary: Tiempo de mantenimiento si su mantenimiento es requerido
+                responsible_maintenance:
+                  required: false
+                  type: string
+                  summary: Responsable del mantenimiento si su mantenimiento es requerido
+                schedule_id:
+                  required: true
+                  type: string
+                  summary: ID del horario de funcionamiento
+                tax_id:
+                  required: true
+                  type: string
+                  summary: ID del impuesto que lleva el area
+                partial_payment:
+                  required: true
+                  type: boolean
+                  summary: Si se permiten pagos parciales
+                number_days:
+                  required: false
+                  type: integer
+                  summary: Numero de Dias permitidos para los pagos parciales
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Es el descuento que puede tener el area
+                goods:
+                  required: false
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      goods_id:
+                        required: true
+                        type: string
+                        summary: Es el ID del bien
+                      quantity:
+                        required: true
+                        type: string
+                        summary: Es la cantidad de ese bien que tiene el area
+                  summary: Son los bienes que tiene el area
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/areas/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del area
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-areas-change-status
+      tags:
+        - account areas
+      summary: Para habilidatar o deshabilitar un area
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

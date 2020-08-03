@@ -1,0 +1,136 @@
+paths:
+  /account/photo/store/{person_id}:
+    post:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona donde se creará la nueva foto
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-photo-store
+      tags:
+        - account person photo
+      summary: Crea una nueva foto
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                photo:
+                  required: true
+                  type: string
+                  summary: Foto de la persona
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/photo/update/{person_id}/{_id}:
+    put:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona, en donde esta la foto
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id de la foto a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-photo-update
+      tags:
+        - account person photo
+      summary: Se actualiza una foto 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                photo:
+                  required: true
+                  type: string
+                  summary: Foto de la persona
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/photo/change-status/{person_id}/{_id}:
+    put:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona, en donde esta la foto
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id de la foto
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-photo-change-status
+      tags:
+        - account person photo
+      summary: Para habilitar o deshabilitar una foto
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados

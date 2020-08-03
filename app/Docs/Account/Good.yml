@@ -1,0 +1,26 @@
+paths:
+  /account/goods/select:
+    get:
+      parameters:
+      - in: query
+        name: search
+        description: String de la busqueda, si no pasas este te retorna 5 registros
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: goods-select
+      tags:
+        - account goods
+      summary: Select de bienes
+      responses:
+        200:
+          description: success

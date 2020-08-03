@@ -1,0 +1,284 @@
+paths:
+  /account/branch-offices:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-branch-offices-index
+      tags:
+        - account branch offices
+      summary: Retorna todas las sucursales de la empresa actual
+      responses:
+        200:
+          description: success
+  
+  /account/branch-offices/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-branch-offices-index
+      tags:
+        - account branch offices
+      summary: Retorna todas las sucursales de la empresa actual
+      responses:
+        200:
+          description: success
+
+  /account/branch-offices/store:
+    post:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-branch-offices-store
+      tags:
+        - account branch offices
+      summary: Crear sucursal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                logo:
+                  required: true
+                  type: string
+                address:
+                  required: true
+                  type: string
+                contacts:
+                  required: true
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        required: true
+                        type: string
+                      email:
+                        required: true
+                        type: string
+                      phone:
+                        required: true
+                        type: string
+                center:
+                  required: true
+                  type: boolean
+                code:
+                  required: true
+                  type: string
+                location:
+                  required: true
+                  type: string
+                type_id:
+                  required: true
+                  type: string
+                country_id:
+                  required: true
+                  type: string
+                province_id:
+                  required: true
+                  type: string
+                district_id:
+                  required: true
+                  type: string
+                photos:
+                  required: true
+                  type: array
+                  items:
+                    type: string
+                social_network:
+                  required: true
+                  type: object
+                  properties:
+                    instagram:
+                      type: string
+                    facebook:
+                      type: string
+                    twitter:
+                      type: string
+                    web:
+                      type: string
+      responses:
+        200:
+          description: success
+
+  /account/branch-offices/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la de la sucursal
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-branch-offices-show
+      tags:
+        - account branch offices
+      summary: Ver datos de una sucursal
+      responses:
+        200:
+          description: success
+
+  /account/branch-offices/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la de la sucursal
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-branch-offices-update
+      tags:
+        - account branch offices
+      summary: Editar sucursal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                logo:
+                  required: true
+                  type: string
+                address:
+                  required: true
+                  type: string
+                contacts:
+                  required: true
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      name:
+                        required: true
+                        type: string
+                      email:
+                        required: true
+                        type: string
+                      phone:
+                        required: true
+                        type: string
+                center:
+                  required: true
+                  type: boolean
+                code:
+                  required: true
+                  type: string
+                location:
+                  required: true
+                  type: string
+                type_id:
+                  required: true
+                  type: string
+                country_id:
+                  required: true
+                  type: string
+                province_id:
+                  required: true
+                  type: string
+                district_id:
+                  required: true
+                  type: string
+                photos:
+                  required: true
+                  type: array
+                  items:
+                    type: string
+                social_network:
+                  required: true
+                  type: object
+                  properties:
+                    instagram:
+                      type: string
+                    facebook:
+                      type: string
+                    twitter:
+                      type: string
+                    web:
+                      type: string
+      responses:
+        200:
+          description: success
+  
+  /account/branch-offices/{_id}/asociate-user/{user_id}:
+    get:
+      operationId: branch_asociate_user
+      tags:
+        - account branch offices
+      summary: Asocia un usuario a la sucursal
+      responses:
+        200:
+          description: success
+      

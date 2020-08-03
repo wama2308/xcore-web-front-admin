@@ -1,0 +1,28 @@
+paths:
+  /admin/business/store:
+    post:
+      operationId: business-store
+      tags:
+        - admin
+      summary: Registrar nuevo cliente master
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  required: true
+                  type: string
+                  format: email
+                name:
+                  required: true
+                  type: string
+                logo:
+                  required: false
+                  type: string
+      responses:
+        200:
+          description: success
+  

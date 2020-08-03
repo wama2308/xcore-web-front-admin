@@ -1,0 +1,217 @@
+paths:
+  /users:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-list
+      tags:
+        - users
+      summary: Lista todos los usuarios
+      responses:
+        200:
+          description: success
+
+  /users/select:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-select
+      tags:
+        - users
+      summary: Select de usuarios
+      responses:
+        200:
+          description: success
+    
+  /users/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina
+        required: true
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-list-disabled
+      tags:
+        - users
+      summary: Lista todos los usuarios inactivos
+      responses:
+        200:
+          description: success
+
+  /users/{_id}:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-show
+      tags:
+        - users
+      summary: Retorna la información de un usuario
+      responses:
+        200:
+          description: success
+
+  /users/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-store
+      tags:
+        - users
+      summary: Registra un usuario nuevo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                names:
+                  required: true
+                  type: string
+                surnames:
+                  required: true
+                  type: string
+                username:
+                  required: true
+                  type: string
+                email:
+                  required: true
+                  type: string
+                  format: email
+                password:
+                  required: true
+                  type: string
+                password_confirmation:
+                  required: true
+                  type: string
+                secret:
+                  required: true
+                  type: string
+      responses:
+        200:
+          description: success
+
+  /users/update/{_id}:
+    put:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-update
+      tags:
+        - users
+      summary: Edita un usuario
+      responses:
+        200:
+          description: success
+
+  /users/change-status/{_id}:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: user-change-status
+      tags:
+        - users
+      summary: Habilita un usuario
+      responses:
+        200:
+          description: success
+            

@@ -1,0 +1,379 @@
+paths:
+  /back-end/license:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+      operationId: license-index
+      tags:
+        - BackEnd license
+      summary: Para ver todas las licencias habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /back-end/license/disabled:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+      operationId: license-disabled
+      tags:
+        - BackEnd license
+      summary: Para ver todas las licencias deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /back-end/license/{_id}:
+    get:
+      parameters:
+        - name: _id
+          in: path
+          description: Id de la licenciaa a ver
+          required: true
+          type: string
+      operationId: license-show
+      tags:
+        - BackEnd license
+      summary: Para ver una licencia
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/license/assign-license:
+    post:
+      parameters:
+      operationId: license-assign-license
+      tags:
+        - BackEnd license
+      summary: Asignar licencia a una empresa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                license_id:
+                  required: true
+                  type: string
+                  summary: Id de la licencia
+                business_id:
+                  required: true
+                  type: string
+                  summary: Id de la empresa
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/license/store:
+    post:
+      parameters:
+      operationId: license-store
+      tags:
+        - BackEnd license
+      summary: Crea una nueva licencia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre de la licencia
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion de la licencia
+                amount:
+                  required: true
+                  type: number
+                  summary: Monto de que lleva la licencia
+                time_cycle:
+                  required: true
+                  type: boolean
+                  summary: Ciclo de licencia (mensual/diario)
+                time_amount:
+                  required: true
+                  type: number
+                  summary: Cantidad de tiempo
+                time_notice_cycle:
+                  required: true
+                  type: boolean
+                  summary: Ciclo de notificaciones (mensuales/diarios)
+                time_notice:
+                  required: true
+                  type: number
+                  summary: Cantidad de tiempo de las notificaciones
+                quantity_branchoffice:
+                  required: true
+                  type: number
+                  summary: Cantidad de sucursales
+                quantity_users:
+                  required: true
+                  type: number
+                  summary: Cantidad de usuarios (trabajadores)
+                quantity_clients:
+                  required: true
+                  type: number
+                  summary: Cantidad de Clientes
+                quantity_products:
+                  required: true
+                  type: number
+                  summary: Cantidad de productos
+                quantity_classes:
+                  required: true
+                  type: number
+                  summary: Cantidad de clases
+                quantity_packages:
+                  required: true
+                  type: number
+                  summary: Cantidad de paquetes
+                quantity_services:
+                  required: true
+                  type: number
+                  summary: Cantidad de servicios
+                quantity_plans:
+                  required: true
+                  type: number
+                  summary: Cantidad de planes
+                type_license_id:
+                  required: true
+                  type: string
+                  summary: Id del tipo de licencia
+                countries:
+                  required: true
+                  type: array
+                  summary: paices a los va dirigida la licencia
+                  items:
+                    type: string
+                    summary: ids de los paices
+                modules:
+                  required: true
+                  type: array
+                  summary: Modulos que lleva la licencia
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del modulo
+                      permits:
+                        required: true
+                        type: array
+                        summary: permisos que lleva este modulo
+                        items:
+                          type: string
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/license/update/{_id}:
+    put:
+      parameters:
+        - name: _id
+          in: path
+          description: Id de la licencia a editar
+          required: true
+          type: string
+      operationId: license-update
+      tags:
+        - BackEnd license
+      summary: Se actualiza una licencia
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre de la licencia
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion de la licencia
+                amount:
+                  required: true
+                  type: number
+                  summary: Monto de que lleva la licencia
+                time_cycle:
+                  required: true
+                  type: boolean
+                  summary: Ciclo de licencia (mensual/diario)
+                time_amount:
+                  required: true
+                  type: number
+                  summary: Cantidad de tiempo
+                time_notice_cycle:
+                  required: true
+                  type: boolean
+                  summary: Ciclo de notificaciones (mensuales/diarios)
+                time_notice:
+                  required: true
+                  type: number
+                  summary: Cantidad de tiempo de las notificaciones
+                quantity_branchoffice:
+                  required: true
+                  type: number
+                  summary: Cantidad de sucursales
+                quantity_users:
+                  required: true
+                  type: number
+                  summary: Cantidad de usuarios (trabajadores)
+                quantity_clients:
+                  required: true
+                  type: number
+                  summary: Cantidad de Clientes
+                quantity_products:
+                  required: true
+                  type: number
+                  summary: Cantidad de productos
+                quantity_classes:
+                  required: true
+                  type: number
+                  summary: Cantidad de clases
+                quantity_packages:
+                  required: true
+                  type: number
+                  summary: Cantidad de paquetes
+                quantity_services:
+                  required: true
+                  type: number
+                  summary: Cantidad de servicios
+                quantity_plans:
+                  required: true
+                  type: number
+                  summary: Cantidad de planes
+                type_license_id:
+                  required: true
+                  type: string
+                  summary: Id del tipo de licencia
+                countries:
+                  required: true
+                  type: array
+                  summary: paices a los va dirigida la licencia
+                  items:
+                    type: string
+                    summary: ids de los paices
+                modules:
+                  required: true
+                  type: array
+                  summary: Modulos que lleva la licencia
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: Id del modulo
+                      permits:
+                        required: true
+                        type: array
+                        summary: permisos que lleva este modulo
+                        items:
+                          type: string
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /back-end/license/change-status/{_id}:
+    put:
+      parameters:
+        - name: _id
+          in: path
+          description: Id de la licencia
+          required: true
+          type: string
+      operationId: license-change-status
+      tags:
+        - BackEnd license
+      summary: Para habilidatar o deshabilitar una licencia
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados

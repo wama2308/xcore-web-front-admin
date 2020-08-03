@@ -1,0 +1,74 @@
+paths:
+  /account/module:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-module-index
+      tags:
+        - account module
+      summary: Para ver todos los modulos habilitados en la licencia de la empresa
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/module/{_id}:
+    get:
+      parameters:
+        - name: _id
+          in: path
+          description: Id del modulo a ver
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-module-show
+      tags:
+        - account module
+      summary: Para ver un modulo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados

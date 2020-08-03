@@ -1,0 +1,309 @@
+paths:
+  /account/product:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-product-index
+      tags:
+        - account product
+      summary: Para ver todos los productes habilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/product/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-product-disabled
+      tags:
+        - account product
+      summary: Para ver todos los productes deshabilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/product/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: product-select
+      tags:
+        - account product
+      summary: Select de productos
+      responses:
+        200:
+          description: success
+
+  /account/product/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del producto a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-product-show
+      tags:
+        - account product
+      summary: Para ver una product
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/product/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-product-store
+      tags:
+        - account product
+      summary: Crea una nueva product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive el product
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion que tendrá el product
+                code:
+                  required: true
+                  type: string
+                  summary: Codigo del producto
+                photo:
+                  required: false
+                  type: string
+                  summary: Foto para el producto
+                quantity:
+                  required: true
+                  type: integer
+                  summary: Cantidad de producto que está ingresando
+                limit_stock:
+                  required: true
+                  type: integer
+                  summary: Limite de aviso cuando el stock esté bajo
+                price_shop:
+                  required: true
+                  type: integer
+                  summary: Precio de compra del producto
+                price_sale:
+                  required: true
+                  type: integer
+                  summary: Precio de venta al público
+                tax_id:
+                  required: true
+                  type: string
+                  summary: Impuesto que lleva el producto
+                type_supply_id:
+                  required: true
+                  type: string
+                  summary: Tipo de producto
+                discount_id:
+                  required: false
+                  type: string
+                  summary: Descuento que se le agrega al primer lote que se carga, sino se agrega no se cargará descuento
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/product/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del product a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-product-update
+      tags:
+        - account product
+      summary: Se actualiza un product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive el product
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion que tendrá el product
+                code:
+                  required: true
+                  type: string
+                  summary: Codigo del producto
+                photo:
+                  required: false
+                  type: string
+                  summary: Foto para el producto
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/product/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del producto
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-product-change-status
+      tags:
+        - account product
+      summary: Para habilidatar o deshabilitar un producto
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

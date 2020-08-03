@@ -1,0 +1,247 @@
+paths:
+  /account/departmentPositions:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del cargo actual
+        required: true
+        type: string
+      operationId: account-departmentPositions-index
+      tags:
+        - account departmentPositions
+      summary: Para ver todos los cargos habilitados de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/departmentPositions/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del cargo actual
+        required: true
+        type: string
+      operationId: account-departmentPositions-disabled
+      tags:
+        - account departmentPositions
+      summary: Para ver todos los cargos deshabilitados de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+          
+  /account/departmentPositions/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del cargo actual
+        required: true
+        type: string
+      operationId: account-class-store
+      tags:
+        - account departmentPositions
+      summary: Crea un cargo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del cargo
+                description:
+                  required: true
+                  type: string
+                  summary: Aquí va una descripcion
+                department_id:
+                  required: true
+                  type: string
+                  summary: Id del departamento al que pertenece el cargo
+                user_id:
+                  required: true
+                  type: string
+                  summary: Id del usuario que ocupa el cargo
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+
+  /account/departmentPositions/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la del cargo
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-departmentPositions-show
+      tags:
+        - account departmentPositions
+      summary: Ver datos de un cargo
+      responses:
+        200:
+          description: success
+
+  /account/departmentPositions/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la del cargo
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-class-update
+      tags:
+        - account departmentPositions
+      summary: Edita un cargo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del cargo
+                description:
+                  required: true
+                  type: string
+                  summary: Aquí va una descripcion
+                department_id:
+                  required: true
+                  type: string
+                  summary: Id del departamento al que pertenece el cargo
+                user_id:
+                  required: true
+                  type: string
+                  summary: Id del usuario que ocupa el cargo
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/departmentPositions/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del area
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del cargo actual
+        required: true
+        type: string
+      operationId: account-departmentPositions-change-status
+      tags:
+        - account departmentPositions
+      summary: Para habilidatar o deshabilitar un cargo
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

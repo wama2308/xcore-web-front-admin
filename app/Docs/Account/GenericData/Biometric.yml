@@ -1,0 +1,153 @@
+paths:
+  /account/biometric/store/{person_id}:
+    post:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona donde se creará la nueva huella biometrica
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-biometric-store
+      tags:
+        - account person biometric
+      summary: Crea una nueva huella
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hand:
+                  required: true
+                  type: boolean
+                  summary: Si es derecha o izquierda
+                finger_id:
+                  required: true
+                  type: string
+                  summary: Id del dedo de la mano
+                finge_print:
+                  required: true
+                  type: string
+                  summary: Huella ya escaneada
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/biometric/update/{person_id}/{_id}:
+    put:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona, en donde esta la huella a editar
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id de la huella a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-biometric-update
+      tags:
+        - account person biometric
+      summary: Se actualiza una huella 
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                hand:
+                  required: true
+                  type: boolean
+                  summary: Si es derecha o izquierda
+                finger_id:
+                  required: true
+                  type: string
+                  summary: Id del dedo de la mano
+                finge_print:
+                  required: true
+                  type: string
+                  summary: Huella ya escaneada
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/biometric/change-status/{person_id}/{_id}:
+    put:
+      parameters:
+      - name: person_id
+        in: path
+        description: Id de la persona, en donde esta la huella
+        required: true
+        type: string
+      - name: _id
+        in: path
+        description: Id de la huella
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-biometric-change-status
+      tags:
+        - account person biometric
+      summary: Para habilitar o deshabilitar una huella
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

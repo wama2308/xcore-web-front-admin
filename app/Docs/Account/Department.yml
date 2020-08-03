@@ -1,0 +1,260 @@
+paths:
+  /account/departments:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del departamento actual
+        required: true
+        type: string
+      operationId: account-departments-index
+      tags:
+        - account departments
+      summary: Para ver todos los departamentos habilitados de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/departments/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del departamento actual
+        required: true
+        type: string
+      operationId: account-departments-disabled
+      tags:
+        - account departments
+      summary: Para ver todos los departamentos deshabilitados de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/departments/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del departamento actual
+        required: true
+        type: string
+      operationId: departments-select
+      tags:
+        - account departments
+      summary: Select de departamentos
+      responses:
+        200:
+          description: success
+
+  /account/departments/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del departamento actual
+        required: true
+        type: string
+      operationId: account-class-store
+      tags:
+        - account departments
+      summary: Crea un departamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del departamento
+                description:
+                  required: true
+                  type: string
+                  summary: Aquí va una descripcion
+                department_id:
+                  required: false
+                  type: string
+                  summary: En caso de estar creando un departamento hijo de otro aqui se seleciona el padre 
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+
+  /account/departments/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la del departamento
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-departments-show
+      tags:
+        - account departments
+      summary: Ver datos de un departamento
+      responses:
+        200:
+          description: success
+
+  /account/departments/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la del departamento
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-class-update
+      tags:
+        - account departments
+      summary: Edita un departamento
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Este es el nombre del departamento
+                description:
+                  required: true
+                  type: string
+                  summary: Aquí va una descripcion
+                department_id:
+                  required: false
+                  type: string
+                  summary: En caso de estar editando un departamento hijo de otro aqui se seleciona el padre
+                
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/departments/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del area
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id del departamento actual
+        required: true
+        type: string
+      operationId: account-departments-change-status
+      tags:
+        - account departments
+      summary: Para habilidatar o deshabilitar un departamento
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

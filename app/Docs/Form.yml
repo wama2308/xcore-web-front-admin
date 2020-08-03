@@ -1,0 +1,52 @@
+paths:
+  /form/secret-questions:
+    get:
+      operationId: secret-questions
+      tags:
+        - form
+      summary: Retorna todas las preguntas de seguridad
+      responses:
+        200:
+          description: success
+  
+  /form/select-load:
+    get:
+      operationId: select-load
+      tags:
+        - form
+      summary: Retorna todos los datos para la carga de los selectores en formularios
+      responses:
+        200:
+          description: success
+
+  /form/select-country:
+    get:
+      operationId: select-country
+      tags:
+        - form
+      summary: Retorna todos los paices con sus provincias y distritos
+      responses:
+        200:
+          description: success
+
+  /form/country-configuration:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: country-configuration
+      tags:
+        - form
+      summary: Retorna las configuraciones de país, de la sucursal actual
+      responses:
+        200:
+          description: success
+    

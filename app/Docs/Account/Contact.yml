@@ -1,0 +1,21 @@
+paths:
+  /account/contacts/destroy/{_id}:
+    delete:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del contacto
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-contacts-destroy
+      tags:
+        - account contacts
+      summary: Elimina datos de un contacto
+      responses:
+        200:
+          description: success

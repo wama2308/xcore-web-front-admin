@@ -1,0 +1,474 @@
+paths:
+  /account/person:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-person-index
+      tags:
+        - account person
+      summary: Para ver todos las personas habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/person/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-person-disabled
+      tags:
+        - account person
+      summary: Para ver todas las personas deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/person/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del persona a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-person-show
+      tags:
+        - account person
+      summary: Para ver una persona
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              example:
+                message: ok
+                person:
+                  _id: "5e693c1f18a9e4408d84d0d8"
+                  names: Wilfredo Andonio
+                  surnames: Medina Aldana
+                  dni: 12345678
+                  birthday: "1980-01-01"
+                  sex:
+                    label: "Masculino"
+                    value: "5e601b1682555b0da0920101"
+                  civilState:
+                    label: "Soltero(a)"
+                    value: "5e601b3682555b0da0920105"
+                  typeIdentity:
+                    label: "V"
+                    value: "5e4ee6c467aa156282efa60d"
+                  addresses:
+                    - 
+                      _id: "5e693c2018a9e4408d84d0dd"
+                      type: true
+                      work: false
+                      address: "Una dirección principal"
+                    -
+                      _id: "5e693c2018a9e4408d84d0de"
+                      type: false
+                      work: true
+                      address: "Una dirección secundaria"
+                  biometrics:
+                    - 
+                      _id: "5e693c2018a9e4408d84d0e2"
+                      hand: false
+                      finge_print: "esto es una huella mano izquiera pulgar"
+                      finger:
+                        label: "Pulgar"
+                        value: "5e67f4cbdbd8a10ce6914939"
+                    - 
+                      _id: "5e693c2018a9e4408d84d0e3"
+                      hand: false
+                      finge_print: "esto es una huella mano izquiera indice"
+                      finger:
+                        label: "Indice"
+                        value: "5e67f4cbdbd8a10ce691493a"
+                    - 
+                      _id: "5e693c2018a9e4408d84d0e4"
+                      hand: true
+                      finge_print: "esto es una huella mano derecha pulgar"
+                      finger:
+                        label: "Pulgar"
+                        value: "5e67f4cbdbd8a10ce6914939"
+                    - 
+                      _id: "5e693c2018a9e4408d84d0e5"
+                      hand: true
+                      finge_print: "esto es una huella mano derecha indice"
+                      finger:
+                        label: "Indice"
+                        value: "5e67f4cbdbd8a10ce691493a"
+                  emails:
+                    - 
+                      _id: "5e693c2018a9e4408d84d0d9"
+                      type: true
+                      email: "wilfredomedina11@gmail.com"
+                    -
+                      _id: "5e693c2018a9e4408d84d0da"
+                      type: false
+                      email: "correo@secundario.com"
+                  phone:
+                    - 
+                      _id: "5e693c2018a9e4408d84d0db"
+                      type: true
+                      emergency: false
+                      number: "0424-0000000"
+                    - 
+                      _id: "5e693c2018a9e4408d84d0dc"
+                      type: true
+                      emergency: true
+                      names: "Antonio"
+                      surnames: "Medina"
+                      number: "0424-0000001"                        
+                  photos:
+                    - 
+                      _id: "5e693c2018a9e4408d84d0df"
+                      photo: "photo 01"
+                    - 
+                      _id: "5e693c2018a9e4408d84d0e0"
+                      photo: "photo 02"
+                    - 
+                      _id: "5e693c2018a9e4408d84d0e1"
+                      photo: "photo 03"
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/person/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-person-store
+      tags:
+        - account person
+      summary: Crea una nueva persona
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombres que recive la persona
+                surnames:
+                  required: true
+                  type: string
+                  summary: Apellidos que recive la persona
+                type_identity_id:
+                  required: true
+                  type: string
+                  format: oid
+                  summary: Id del tipo de identidad de la persona (varia según el país)
+                dni:
+                  required: true
+                  type: number
+                  summary: DNI de la persona
+                birthday:
+                  required: true
+                  type: string
+                  format: date
+                  summary: Fecha de nacimiento de la persona
+                civil_state_id:
+                  required: true
+                  type: string
+                  summary: Id del estado civil de la persona
+                sex_id:
+                  required: true
+                  type: string
+                  summary: Id del sexo de la persona
+                phone:
+                  required: true
+                  type: array
+                  summary: Telefonos de la persona
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        required: true
+                        type: boolean
+                        summary: El tipo de telefono, si es el principal o el secundario
+                      emergency:
+                        required: true
+                        type: boolean
+                        summary: Si es de emergencias o no
+                      number:
+                        required: true
+                        type: string
+                        summary: Numero de telefono
+                      name:
+                        required: false
+                        type: string
+                        summary: Nombres del contacto de emergencia (requerido solo si emergency es true)
+                      surnames:
+                        required: false
+                        type: string
+                        summary: Apellidos del contacto de emergencia (requerido solo si emergency es true)
+                email:
+                  required: true
+                  type: array
+                  summary: Correos electronicos de la persona
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        required: true
+                        type: boolean
+                        summary: El tipo de correo, si es el principal o el secundario
+                      email:
+                        required: true
+                        type: string
+                        format: email
+                        summary: Correo electronico
+                address:
+                  required: true
+                  type: array
+                  summary: Direcciones de la persona
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        required: true
+                        type: boolean
+                        summary: El tipo de dirección, si es la principal o la secundaria
+                      work:
+                        required: true
+                        type: boolean
+                        summary: Si es del trabajo o no
+                      address:
+                        required: true
+                        type: string
+                        summary: Dirección de la persona
+                photo:
+                  required: false
+                  type: array
+                  summary: Todas las fotos de la persona
+                  items:
+                    type: object
+                    properties:
+                      photo:
+                        required: true
+                        type: string
+                        summary: Foto de la persona
+                biometric:
+                  required: false
+                  type: array
+                  minimum: 4
+                  maximum: 10
+                  summary: Todas las huellas digitales de la persona
+                  items:
+                    type: object
+                    properties:
+                      hand:
+                        required: true
+                        type: boolean
+                        summary: Si es derecha o izquierda
+                      finger_id:
+                        required: true
+                        type: string
+                        summary: Id del dedo de la mano
+                      finge_print:
+                        required: true
+                        type: string
+                        summary: Huella ya escaneada
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/person/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la persona a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-person-update
+      tags:
+        - account person
+      summary: Se actualiza una persona
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombres que recive la persona
+                surnames:
+                  required: true
+                  type: string
+                  summary: Apellidos que recive la persona
+                type_identity_id:
+                  required: true
+                  type: string
+                  summary: Id del tipo de identidad de la persona (varia según el país)
+                dni:
+                  required: true
+                  type: number
+                  summary: DNI de la persona
+                birthday:
+                  required: true
+                  type: date
+                  summary: Fecha de nacimiento de la persona
+                civil_state_id:
+                  required: true
+                  type: string
+                  summary: Id del estado civil de la persona
+                sex_id:
+                  required: true
+                  type: string
+                  summary: Id del sexo de la persona
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/person/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la persona
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-person-change-status
+      tags:
+        - account person
+      summary: Para habilitar o deshabilitar una persona
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

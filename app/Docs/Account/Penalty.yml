@@ -1,0 +1,329 @@
+paths:
+  /account/penalty:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty
+      tags:
+        - account penalty
+      summary: Ver todas las penalizaciones dentro de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+  
+  /account/penalty/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty-disabled
+      tags:
+        - account penalty
+      summary: Ver todas las penalizaciones (deshabilitadas) dentro de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/penalty/type-penalties:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty-type
+      tags:
+        - account penalty
+      summary: Ver todas las penalizaciones dentro de una sucursal en formato para selects
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/penalty/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del penalizacion a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty-show
+      tags:
+        - account penalty
+      summary: Ver una penalizacion espesifica
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/penalty/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty-store
+      tags:
+        - account penalty
+      summary: Crear una penalizacion nueva
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que lleve
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion que conlleva
+                percentage:
+                  required: true
+                  type: boolean
+                  summary: si el monto es por porcentaje o no
+                amount:
+                  required: true
+                  type: integer
+                  summary: monto que conlleva
+                time_type:
+                  required: true
+                  type: integer
+                  summary: Si el tiempo es por hora, dias o meses
+                time_amount:
+                  required: true
+                  type: integer
+                  summary: Cantidad de tiempo
+                type_user:
+                  required: true
+                  type: boolean
+                  summary: Si son trabajadores o clientes a los que afectaran las penalizaciones
+                categories:
+                  required: true
+                  type: array
+                  summary: Todas las categorias que seran afectadas con las penalizaciones
+                  items:
+                    type: string
+                type_of_comparison:
+                  required: true
+                  type: integer
+                  summary: Los diferentes tipos de comparaciones
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/penalty/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la penalizacion a actualizar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty-update
+      tags:
+        - account penalty
+      summary: Editar una penalizacion ya creada
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que lleve
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion que conlleva
+                percentage:
+                  required: true
+                  type: boolean
+                  summary: si el monto es por porcentaje o no
+                amount:
+                  required: true
+                  type: integer
+                  summary: monto que conlleva
+                time_type:
+                  required: true
+                  type: integer
+                  summary: Si el tiempo es por hora, dias o meses
+                time_amount:
+                  required: true
+                  type: integer
+                  summary: Cantidad de tiempo
+                type_user:
+                  required: true
+                  type: boolean
+                  summary: Si son trabajadores o clientes a los que afectaran las penalizaciones
+                categories:
+                  required: true
+                  type: array
+                  summary: Todas las categorias que seran afectadas con las penalizaciones
+                  items:
+                    type: string
+                type_of_comparison:
+                  required: true
+                  type: integer
+                  summary: Los diferentes tipos de comparaciones
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/penalty/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la penalizacion a habilitar o deshabilitar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: penalty-change-status
+      tags:
+        - account penalty
+      summary: Deshabilita o habilita una penalizacion
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+            

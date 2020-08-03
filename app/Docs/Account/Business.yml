@@ -1,0 +1,64 @@
+paths:
+  /account/business:
+    get:
+      operationId: account-business-index
+      tags:
+        - account business
+      summary: Retorna las empresas del usuario autenticado
+      responses:
+        200:
+          description: success
+  
+  /account/business/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la empresa
+        required: true
+        type: string
+      operationId: account-business-show
+      tags:
+        - account business
+      summary: Ver empresa del usuario master autenticado
+      responses:
+        200:
+          description: success
+
+  /account/business/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la de la sucursal
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      operationId: account-business-update
+      tags:
+        - account business
+      summary: Actualiza la empresa del usuario master autenticado
+      requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                required: true
+                type: string
+              name:
+                required: true
+                type: string
+              logo:
+                required: true
+                type: string
+      responses:
+        200:
+          description: success
+  

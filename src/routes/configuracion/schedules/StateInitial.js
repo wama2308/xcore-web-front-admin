@@ -1,0 +1,18 @@
+export const stateInitial = {
+    loading: 'show',
+    actionReducer: 0,
+    arraySchedule: null,
+    arrayScheduleError: '',
+    arrayScheduleTextError: '',
+    arrayScheduleHide: 'hide',
+    registerSchedule: false,
+    nameSchedule: '',
+    nameScheduleError: false,
+    nameScheduleTextError: '',
+    nameScheduleHide: 'hide',
+    intervalsMinute: ['00', '30'],
+    hoursStart: 4,
+    hoursEnd: 24,
+    selectionsSchedule: [],
+    scheduleTextError: '',    
+}

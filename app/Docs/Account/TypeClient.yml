@@ -1,0 +1,633 @@
+paths:
+  /account/type-client:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-type-client-index
+      tags:
+        - account type client
+      summary: Para ver todas las condiciones habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/type-client/disabled:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-type-client-disabled
+      tags:
+        - account type client
+      summary: Para ver todas las condiciones deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/type-client/{_id}:
+    get:
+      parameters:
+        - name: _id
+          in: path
+          description: Id de la condiciones a ver
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-type-client-show
+      tags:
+        - account type client
+      summary: Para ver una condiciones
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/type-client/store:
+    post:
+      parameters:
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-type-client-store
+      tags:
+        - account type client
+      summary: Crea una nueva condiciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la condicion
+                description:
+                  required: true
+                  type: string
+                  summary: description de la condicion
+                stars:
+                  required: true
+                  type: integer
+                  summary: La cantidad de estrellas que se le asignaran
+                general:
+                  required: true
+                  type: boolean
+                  summary: Selecciona se cargan reglas generales o individuales
+                type_comparison:
+                  required: false
+                  type: integer
+                  summary: Tipo de comparación
+                time_cycle:
+                  required: false
+                  type: boolean
+                  summary: Selecciona el tiempo si es mensual o diario
+                time_amount:
+                  required: false
+                  type: integer
+                  summary: Cantidad de tiempo ya seleccionado
+                percentage:
+                  required: false
+                  type: boolean
+                  summary: Selecciona si es porcentaje (true) o por monto (false)
+                percentage_amount:
+                  required: false
+                  type: integer
+                  summary: Monto que presente
+                restart_season:
+                  required: true
+                  type: boolean
+                  summary: Si se reiniciará o no esta categoria
+                restart_season_time:
+                  required: false
+                  type: boolean
+                  summary: Si se reiniciará por día o por mes
+                restart_season_amount:
+                  required: false
+                  type: integer
+                  summary: Periodo de reinicio
+                areas:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de areas
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                package:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de paquetes
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                service:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de servicios
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                class:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de clases
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                plan:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de planes
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/type-client/update/{_id}:
+    put:
+      parameters:
+        - name: _id
+          in: path
+          description: Id de la condiciones a editar
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-type-client-update
+      tags:
+        - account type client
+      summary: Se actualiza una condiciones
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la condicion
+                description:
+                  required: true
+                  type: string
+                  summary: description de la condicion
+                stars:
+                  required: true
+                  type: integer
+                  summary: La cantidad de estrellas que se le asignaran
+                general:
+                  required: true
+                  type: boolean
+                  summary: Selecciona se cargan reglas generales o individuales
+                type_comparison:
+                  required: false
+                  type: integer
+                  summary: Tipo de comparación
+                time_cycle:
+                  required: false
+                  type: boolean
+                  summary: Selecciona el tiempo si es mensual o diario
+                time_amount:
+                  required: false
+                  type: integer
+                  summary: Cantidad de tiempo ya seleccionado
+                percentage:
+                  required: false
+                  type: boolean
+                  summary: Selecciona si es porcentaje (true) o por monto (false)
+                percentage_amount:
+                  required: false
+                  type: integer
+                  summary: Monto que presente
+                restart_season:
+                  required: true
+                  type: boolean
+                  summary: Si se reiniciará o no esta categoria
+                restart_season_time:
+                  required: false
+                  type: boolean
+                  summary: Si se reiniciará por día o por mes
+                restart_season_amount:
+                  required: false
+                  type: integer
+                  summary: Periodo de reinicio
+                areas:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de areas
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                package:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de paquetes
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                service:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de servicios
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                class:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de clases
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+                plan:
+                  required: false
+                  type: array
+                  summary: Array plano con todos los objetos de planes
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        required: true
+                        type: string
+                        summary: id del objeto
+                      type_comparison:
+                        required: false
+                        type: integer
+                        summary: Tipo de comparación
+                      time_cycle:
+                        required: false
+                        type: boolean
+                        summary: Selecciona el tiempo si es mensual o diario
+                      time_amount:
+                        required: false
+                        type: integer
+                        summary: Cantidad de tiempo ya seleccionado
+                      percentage:
+                        required: false
+                        type: boolean
+                        summary: Selecciona si es porcentaje (true) o por monto (false)
+                      percentage_amount:
+                        required: false
+                        type: integer
+                        summary: Monto que presente
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/type-client/change-status/{_id}:
+    put:
+      parameters:
+        - name: _id
+          in: path
+          description: Id de la condiciones
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: account-type-client-change-status
+      tags:
+        - account type client
+      summary: Para habilidatar o deshabilitar una condiciones
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados

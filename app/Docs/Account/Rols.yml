@@ -1,0 +1,280 @@
+paths:
+  /account/rols:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: rols
+      tags:
+        - account rols
+      summary: Ver todos los roles dentro de una sucursal
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/rols/disabled:
+    get:
+      parameters:
+        - in: query
+          name: page
+          description: Numero de la pagina (por defecto es 1)
+          required: false
+          type: string
+        - in: query
+          name: perPage
+          description: Cantidad de elementos a mostrar (por defecto es 10)
+          required: false
+          type: string
+        - in: query
+          name: search
+          description: String de la busqueda
+          required: false
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: rols-disabled
+      tags:
+        - account rols
+      summary: Ver todos los roles dentro de una sucursal deshabilitados
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/rols/select:
+    get:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: rols-select
+      tags:
+        - account rols
+      summary: Select de roles
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/rols/{_id}:
+    get:
+      parameters:
+        - name: _id
+          in: path
+          description: Id del Rol a ver
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: rols-show
+      tags:
+        - account rols
+      summary: Ver un rol espesifico
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/rols/store:
+    post:
+      parameters:
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: rols-store
+      tags:
+        - account rols
+      summary: Crear un rol nuevo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que lleva el rol
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion del rol
+                modules:
+                  required: true
+                  type: array
+                  summary: Modulos y permisos
+                  items:
+                    type: string
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/rols/update/{_id}:
+    put:
+      parameters:
+        - name: _id
+          in: path
+          description: Id del Rol a actualizar
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: rols-update
+      tags:
+        - account rols
+      summary: Editar un rol ya creado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que lleva el rol
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion del rol
+                modules:
+                  required: true
+                  type: array
+                  summary: Modulos y permisos
+                  items:
+                    type: string
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/rols/change-status/{_id}:
+    put:
+      parameters:
+        - name: _id
+          in: path
+          description: Id del Rol a habilitar o deshabilitar
+          required: true
+          type: string
+        - name: business_id
+          in: header
+          description: Id de la empesa actual
+          required: true
+          type: string
+        - name: branch_office_id
+          in: header
+          description: Id de la sucursal actual
+          required: true
+          type: string
+      operationId: rols-change-status
+      tags:
+        - account rols
+      summary: Deshabilita o habilita un rol
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados

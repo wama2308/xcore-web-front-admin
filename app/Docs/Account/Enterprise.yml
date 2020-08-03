@@ -1,0 +1,323 @@
+paths:
+  /account/enterprise:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-enterprise-index
+      tags:
+        - account enterprise
+      summary: Para ver todos las empresas habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/enterprise/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-enterprise-disabled
+      tags:
+        - account enterprise
+      summary: Para ver todas las empresas deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/enterprise/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id del empresa a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-enterprise-show
+      tags:
+        - account enterprise
+      summary: Para ver una empresa
+
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/enterprise/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-enterprise-store
+      tags:
+        - account enterprise
+      summary: Crea una nueva empresa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive la empresa
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion la empresa
+                type_identity_id:
+                  required: true
+                  type: string
+                  summary: Id del tipo de identidad de la empresa (varia según el país)
+                nif:
+                  required: true
+                  type: string
+                  summary: nif (rif) de la empresa
+                retainer:
+                  required: true
+                  type: boolean
+                  summary: Si es retenzora de I.V.A o no
+                percentage_amount:
+                  required: false
+                  type: number
+                  summary: Cantidad de porcentaje del cual es retenzora (si es retenzora)
+                phone:
+                  required: true
+                  type: array
+                  summary: Telefonos de la empresa
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        required: true
+                        type: boolean
+                        summary: El tipo de telefono, si es el principal o el secundario
+                      number:
+                        required: true
+                        type: string
+                        summary: Numero de telefono
+                email:
+                  required: true
+                  type: array
+                  summary: Correos electronicos de la empresa
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        required: true
+                        type: boolean
+                        summary: El tipo de correo, si es el principal o el secundario
+                      email:
+                        required: true
+                        type: string
+                        format: email
+                        summary: Correo electronico
+                address:
+                  required: true
+                  type: array
+                  summary: Direcciones de la empresa
+                  items:
+                    type: object
+                    properties:
+                      type:
+                        required: true
+                        type: boolean
+                        summary: El tipo de dirección, si es la principal o la secundaria
+                      address:
+                        required: true
+                        type: string
+                        summary: Dirección de la empresa
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/enterprise/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la empresa a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-enterprise-update
+      tags:
+        - account enterprise
+      summary: Se actualiza una empresa
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que recive la empresa
+                description:
+                  required: true
+                  type: string
+                  summary: Descripcion la empresa
+                type_identity_id:
+                  required: true
+                  type: string
+                  summary: Id del tipo de identidad de la empresa (varia según el país)
+                nif:
+                  required: true
+                  type: string
+                  summary: nif (rif) de la empresa
+                retainer:
+                  required: true
+                  type: boolean
+                  summary: Si es retenzora de I.V.A o no
+                percentage_amount:
+                  required: false
+                  type: number
+                  summary: Cantidad de porcentaje del cual es retenzora (si es retenzora)
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/enterprise/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la enterprisea
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-enterprise-change-status
+      tags:
+        - account enterprise
+      summary: Para habilitar o deshabilitar una enterprisea
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+  

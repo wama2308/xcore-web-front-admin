@@ -1,0 +1,292 @@
+paths:
+  /account/goal:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-goal-index
+      tags:
+        - account goal
+      summary: Para ver todas las metas habilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/goal/disabled:
+    get:
+      parameters:
+      - in: query
+        name: page
+        description: Numero de la pagina (por defecto es 1)
+        required: false
+        type: string
+      - in: query
+        name: perPage
+        description: Cantidad de elementos a mostrar (por defecto es 10)
+        required: false
+        type: string
+      - in: query
+        name: search
+        description: String de la busqueda
+        required: false
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-goal-disabled
+      tags:
+        - account goal
+      summary: Para ver todas las metas deshabilitadas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+
+  /account/goal/{_id}:
+    get:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la metas a ver
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-goal-show
+      tags:
+        - account goal
+      summary: Para ver una metas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/goal/store:
+    post:
+      parameters:
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-goal-store
+      tags:
+        - account goal
+      summary: Crea una nueva metas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rol_id:
+                  required: true
+                  type: string
+                  summary: Identificador de los roles que van a estar bajo esta meta
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la condicion
+                description:
+                  required: true
+                  type: string
+                  summary: description de la condicion
+                period:
+                  required: true
+                  type: boolean
+                  summary: Selecciona si es un periodo diario o mensual
+                period_cycle:
+                  required: true
+                  type: integer
+                  summary: Se carga el tiempo de un periodo
+                terms:
+                  required: true
+                  type: array
+                  summary: Aquí van las condiciones a seguir 
+                  items:
+                    type: string
+                incentives:
+                  required: true
+                  type: array
+                  summary: Aquí van los incentivos o recompensas que se deran al cumplir las condiciones
+                  items:
+                    type: string
+      responses:
+        200:
+          description: success
+        201:
+          description: Recurso creado exitosamente 
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/goal/update/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la metas a editar
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-goal-update
+      tags:
+        - account goal
+      summary: Se actualiza una metas
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                rol_id:
+                  required: true
+                  type: string
+                  summary: Identificador de los roles que van a estar bajo esta meta
+                name:
+                  required: true
+                  type: string
+                  summary: Nombre que se le dará a la condicion
+                description:
+                  required: true
+                  type: string
+                  summary: description de la condicion
+                period:
+                  required: true
+                  type: boolean
+                  summary: Selecciona si es un periodo diario o mensual
+                period_cycle:
+                  required: true
+                  type: integer
+                  summary: Se carga el tiempo de un periodo
+                terms:
+                  required: true
+                  type: array
+                  summary: Aquí van las condiciones a seguir 
+                  items:
+                    type: string
+                incentives:
+                  required: true
+                  type: array
+                  summary: Aquí van los incentivos o recompensas que se deran al cumplir las condiciones
+                  items:
+                    type: string
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+
+  /account/goal/change-status/{_id}:
+    put:
+      parameters:
+      - name: _id
+        in: path
+        description: Id de la metas
+        required: true
+        type: string
+      - name: business_id
+        in: header
+        description: Id de la empesa actual
+        required: true
+        type: string
+      - name: branch_office_id
+        in: header
+        description: Id de la sucursal actual
+        required: true
+        type: string
+      operationId: account-goal-change-status
+      tags:
+        - account goal
+      summary: Para habilidatar o deshabilitar una metas
+      responses:
+        200:
+          description: success
+        401:
+          description: No autenticado
+        403:
+          description: No tiene permisos
+        404:
+          description: Recurso no encontrado
+        422:
+          description: Errores de validación, se enviaron datos errados
+ 
