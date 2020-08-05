@@ -11,6 +11,7 @@ import feedbacksReducer from "./FeedbacksReducer";
 import ecommerceReducer from "./EcommerceReducer";
 import aplicationReducers from "./aplicationReducer";
 import ClientsReducer from "./ClientsReducer";
+import CategoryReducer from "./CategoryReducer";
 
 const reducers = combineReducers({
   settings,
@@ -22,6 +23,7 @@ const reducers = combineReducers({
   ecommerce: ecommerceReducer,
   general: aplicationReducers,  
   clients: ClientsReducer,
+  category: CategoryReducer,
   
 });
 

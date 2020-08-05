@@ -1,5 +1,7 @@
 module.exports = {
   "sidebar.categories": "Categorias",
+  "sidebar.categoriesEnabled": "Categorias Activas",
+  "sidebar.categoriesDisabled": "Categorias Inactivas",
 
   "sidebar.dashboard": "Tablero",
   "sidebar.configuracion": "Configuracion",

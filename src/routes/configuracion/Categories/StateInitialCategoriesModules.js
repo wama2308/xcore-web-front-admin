@@ -1,26 +1,18 @@
-export const stateInitial = {
-    loading: 'show',
-    actionReducer: 0,
-
+export const stateInitialCateroriesModules = {
     name: "",
     name_error: false,
     name_text_error: '',
-    name_hide: 'hide',
-
-    menu_icon: null,
-    menu_icon_error: '',
-    menu_icon_text_error: '',
-    menu_icon_hide: 'hide',
+    name_hide: 'hide',    
 
     description: '',
     description_error: false,
     description_text_error: '',
     description_hide: 'hide',
 
-    type: null,
-    type_error: '',
-    type_text_error: '',
-    type_hide: 'hide',
+    path: '',
+    path_error: false,
+    path_text_error: '',
+    path_hide: 'hide',
 
     new_item: false,
     new_item_error: '',
@@ -50,21 +42,6 @@ export const stateInitial = {
     test_end_date: new Date(),
     test_end_date_error: "",
     test_end_date_text_error: '',
-    test_end_date_hide: 'hide',   
-    
-    array_type_category: [
-        {
-            label:'Dash',
-            value:'dash',
-        },
-        {
-            label:'Client',
-            value:'client',
-        },
-        {
-            label:'Admin',
-            value:'admin',
-        },
-    ]
-    
+    test_end_date_hide: 'hide',
+
 }

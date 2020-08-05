@@ -82,15 +82,15 @@ export const urlWs =
 export const getDataToken = () => {
   return new Promise((resolve) => {
     const token = "Bearer " + window.localStorage.getItem("token");
-    const business_id = window.localStorage.getItem("business_default");
-    const branch_office_id = window.localStorage.getItem(
-      "branch_office_default"
-    );
+    // const business_id = window.localStorage.getItem("business_default");
+    // const branch_office_id = window.localStorage.getItem(
+    //   "branch_office_default"
+    // );
     const datos = {
       headers: {
         Authorization: token,
-        business_id: business_id,
-        branch_office_id: branch_office_id,
+        // business_id: business_id,
+        // branch_office_id: branch_office_id,
       },
     };
     resolve(datos);
@@ -559,7 +559,7 @@ export const updateLocalStorage = (data, nodo) => {
     });
     localStorage.setItem("stateSale", JSON.stringify(stateSale));
   }
-  if (nodo === 'editLocalStorageAreaId') {    
+  if (nodo === 'editLocalStorageAreaId') {
     // if (stateSale.ecommerce.resultItemsAll.find(dataFind => dataFind.typeItem === 'areas')) {
     //   console.log("AQUII ", data);
     //   stateSale.ecommerce.resultItemsAll = [...stateSale.ecommerce.resultItemsAll, data]
@@ -603,4 +603,10 @@ export const loadItemsAll = () => {
   } else {
     return false;
   }
+}
+
+export const formatDateDateTables = (data) => {
+  let fecha = new Date(data);
+  var options = { year: 'numeric', month: 'long', day: 'numeric' };
+  return fecha.toLocaleDateString("es-ES", options);
 }
