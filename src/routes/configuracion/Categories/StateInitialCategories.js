@@ -1,5 +1,4 @@
 export const stateInitial = {
-    loading: 'show',
     actionReducer: 0,
 
     name: "",

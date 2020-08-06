@@ -28,6 +28,8 @@ export const LoadCategoryAction = () => dispatch => {
                             categoryId: {},                            
                             loading: false,
                             dataSettings:[],
+                            dataSettingsModules:[],
+                            dataModules:[],
                         }
                     });
                 })
@@ -207,4 +209,73 @@ export const cleanStoreFunction = () => dispatch => {
         payload: {}
     });
 };
+
+export const addSettingsCategoryFunction = (data, callback) => dispatch => {
+    dispatch({
+        type: "ADD_SEETINGS_CATEGORY",
+        payload: {
+            data: data
+        }
+    });
+    callback();
+    NotificationManager.success("Configuracion agregada");
+};
+
+export const updateSettingsCategoryFunction = (key, data, callback) => dispatch => {
+    dispatch({
+        type: "UPDATE_SETTINGS_CATEGORY",
+        payload: {
+            key: key,
+            data: data
+        }
+    });
+    callback();
+    NotificationManager.success("Configuracion editada");
+};
+
+export const deleteSettingsCategoryFunction = (key) => dispatch => {
+    dispatch({
+        type: "DELETE_SETTINGS_CATEGORY",
+        payload: key
+    });
+    NotificationManager.success("Configuracion eliminada");
+}
+
+export const addSettingsModuleFunction = (data, callback) => dispatch => {
+    dispatch({
+        type: "ADD_SEETINGS_MODULE",
+        payload: {
+            data: data
+        }
+    });
+    callback();
+    NotificationManager.success("Configuracion agregada");
+};
+
+export const updateSettingsModuleFunction = (key, data, callback) => dispatch => {
+    dispatch({
+        type: "UPDATE_SETTINGS_MODULE",
+        payload: {
+            key: key,
+            data: data
+        }
+    });
+    callback();
+    NotificationManager.success("Configuracion editada");
+};
+
+export const deleteSettingsModuleFunction = (key) => dispatch => {
+    dispatch({
+        type: "DELETE_SETTINGS_MODULE",
+        payload: key
+    });
+    NotificationManager.success("Configuracion eliminada");
+}
+
+export const clenaSettingsModuleFunction = () => dispatch => {
+    dispatch({
+        type: "CLEAN_SETTINGS_MODULE",
+        payload: []
+    });    
+}
 

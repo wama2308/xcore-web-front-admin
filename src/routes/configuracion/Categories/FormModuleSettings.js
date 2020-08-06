@@ -17,26 +17,23 @@ import Switch from '@material-ui/core/Switch';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/css/style.css";
-import { stateInitialCateroriesSettings } from './StateInitialCategoriesSettings';
-import ListSettingsCategory from "./ListSettingsCategory";
+import { stateInitialCateroriesModules } from './StateInitialCategoriesModules';
+import ListModuleSettings from "./ListModuleSettings";
 
-const FormSettingsCategory = props => {
-    const initialFormState = stateInitialCateroriesSettings;
-    const [formSettingsCategoria, setFormSettingsCategoria] = useState(initialFormState)
+const FormModuleSettings = props => {
+    const initialFormState = stateInitialCateroriesModules;
+    const [formModuleSetting, setFormModuleSetting] = useState(initialFormState)
 
-    const handleChange = (error, errorText, hide, type) => e => {
+    const handleChange = e => {
         const { name, value } = e.target;
-        setFormSettingsCategoria(prev => ({
+        setFormModuleSetting(prev => ({
             ...prev,
-            [name]: value,
-            [error]: type === 1 ? false : "",
-            [errorText]: "",
-            [hide]: "hide",
+            [name]: value
         }))
     };
 
     const handlekey = (campoError, campoErrorText, hide, type) => {
-        setFormSettingsCategoria(prev => ({
+        setFormModuleSetting(prev => ({
             ...prev,
             [campoError]: type === 1 ? false : "",
             [campoErrorText]: "",
@@ -45,7 +42,7 @@ const FormSettingsCategory = props => {
     };
 
     const handleChangeSelect = (value, select, selectError, selectErrorText, selecthide) => {
-        setFormSettingsCategoria(prev => ({
+        setFormModuleSetting(prev => ({
             ...prev,
             [select]: value,
             [selectError]: "",
@@ -56,15 +53,15 @@ const FormSettingsCategory = props => {
     };
 
     const cleanFields = () => {
-        setFormSettingsCategoria({
+        setFormModuleSetting({
             ...initialFormState
-        });
+        });        
     }
 
     const validate = () => {
         let acum = "";
-        if (formSettingsCategoria.xc_language_id === null) {
-            setFormSettingsCategoria(prev => ({
+        if (formModuleSetting.xc_language_id === null) {
+            setFormModuleSetting(prev => ({
                 ...prev,
                 xc_language_id_error: 'borderColor',
                 xc_language_id_text_error: "Seleccione el lenguaje",
@@ -72,8 +69,8 @@ const FormSettingsCategory = props => {
             }))
             acum = 1;
         }
-        if (formSettingsCategoria.menu_title === '') {
-            setFormSettingsCategoria(prev => ({
+        if (formModuleSetting.menu_title === '') {
+            setFormModuleSetting(prev => ({
                 ...prev,
                 menu_title_error: true,
                 menu_title_text_error: "Ingrese el titulo",
@@ -81,10 +78,10 @@ const FormSettingsCategory = props => {
             }))
             acum = 1;
         }
-        if (props.dataSettings.find(data => data.xc_language_id.value === formSettingsCategoria.xc_language_id.value) &&
-            (props.dataSettings.findIndex(data => data.xc_language_id.value === formSettingsCategoria.xc_language_id.value) !== formSettingsCategoria.keySettingsCategory)
+        if (props.dataSettingsModules.find(data => data.xc_language_id.value === formModuleSetting.xc_language_id.value) &&
+            (props.dataSettingsModules.findIndex(data => data.xc_language_id.value === formModuleSetting.xc_language_id.value) !== formModuleSetting.keySettingsModule)
         ) {
-            setFormSettingsCategoria(prev => ({
+            setFormModuleSetting(prev => ({
                 ...prev,
                 xc_language_id_error: 'borderColor',
                 xc_language_id_text_error: "Este lenguaje ya esta registrado",
@@ -98,46 +95,46 @@ const FormSettingsCategory = props => {
         return true;
     }
 
-    const handleDatosSettingsCategory = event => {
+    const handleDatosSettingsModules = event => {
         event.preventDefault();
         const isValid = validate();
         if (isValid) {
             let data = {
-                xc_language_id: formSettingsCategoria.xc_language_id,
-                menu_title: formSettingsCategoria.menu_title,
-                tooltips: formSettingsCategoria.tooltips,
-                test_description: formSettingsCategoria.test_description,
+                xc_language_id: formModuleSetting.xc_language_id,
+                menu_title: formModuleSetting.menu_title,
+                tooltips: formModuleSetting.tooltips,
+                test_description: formModuleSetting.test_description,
             };
-            if (formSettingsCategoria.actionSettingsCategory === 0) {
-                props.addSettingsCategoryFunction(data, () => { cleanFields() });
+            if (formModuleSetting.actionSettingsModule === 0) {
+                props.addSettingsModuleFunction(data, () => { cleanFields() });
             } else {
-                props.updateSettingsCategoryFunction(formSettingsCategoria.keySettingsCategory, data, () => { cleanFields() });
+                props.updateSettingsModuleFunction(formModuleSetting.keySettingsModule, data, () => { cleanFields() });
             }
         }
     }
 
-    const updateSetting = (key, data) => {
+    const updateSettingModules = (key, data) => {
         const message = {
             title: "Editar Configuracion",
             info: "¿Esta seguro que desea editar esta configuracion?"
         };
         props.confirm(message, res => {
             if (res) {
-                setFormSettingsCategoria(prev => ({
+                setFormModuleSetting(prev => ({
                     ...prev,
                     xc_language_id: data.xc_language_id,
                     menu_title: data.menu_title,
                     tooltips: data.tooltips,
                     test_description: data.test_description,
-                    actionSettingsCategory: 1,
-                    keySettingsCategory: key
+                    actionSettingsModule: 1,
+                    keySettingsModule: key
                 }))
             }
         });
     }
 
-    const deleteSetting = (key) => {
-        if (formSettingsCategoria.keySettingsCategory === key) {
+    const deleteSettingModules = (key) => {
+        if (formModuleSetting.keySettingsModule === key) {
             NotificationManager.warning("¡La configuracion esta en proceso de edicion, no puede ser eliminada!");
         } else {
             const message = {
@@ -146,7 +143,7 @@ const FormSettingsCategory = props => {
             };
             props.confirm(message, res => {
                 if (res) {
-                    props.deleteSettingsCategoryFunction(key);
+                    props.deleteSettingsModuleFunction(key);
                 }
             });
         }
@@ -159,14 +156,14 @@ const FormSettingsCategory = props => {
                 <FormGroup className="top form-group col-sm-6">
                     <div>
                         <Label for="xc_language_id">Lenguaje</Label>
-                        <div className={formSettingsCategoria.xc_language_id_error}>
+                        <div className={formModuleSetting.xc_language_id_error}>
                             <Select
                                 isSearchable
                                 isClearable
                                 isDisabled={props.disabled}
                                 name="xc_language_id"
                                 id="xc_language_id"
-                                value={formSettingsCategoria.xc_language_id}
+                                value={formModuleSetting.xc_language_id}
                                 onChange={event => handleChangeSelect(
                                     event,
                                     "xc_language_id",
@@ -177,8 +174,8 @@ const FormSettingsCategory = props => {
                                 options={[{ label: 'Español', value: 1 }, { label: 'Ingles', value: 2 }]}
                             />
                         </div>
-                        <div className={`${formSettingsCategoria.xc_language_id_hide} errorControl`}>
-                            {formSettingsCategoria.xc_language_id_text_error}
+                        <div className={`${formModuleSetting.xc_language_id_hide} errorControl`}>
+                            {formModuleSetting.xc_language_id_text_error}
                         </div>
                     </div>
                 </FormGroup>
@@ -186,22 +183,22 @@ const FormSettingsCategory = props => {
                     <div>
                         <Label for="menu_title">Titulo</Label>
                         <Input
-                            invalid={formSettingsCategoria.menu_title_error}
+                            invalid={formModuleSetting.menu_title_error}
                             id="menu_title"
                             name="menu_title"
-                            // onKeyUp={event => handlekey(
-                            //     "menu_title_error",
-                            //     "menu_title_text_error",
-                            //     "menu_title_hide",
-                            //     1
-                            // )}
-                            onChange={handleChange("menu_title_error", "menu_title_text_error", "menu_title_hide", 1)}
-                            value={formSettingsCategoria.menu_title}
+                            onKeyUp={event => handlekey(
+                                "menu_title_error",
+                                "menu_title_text_error",
+                                "menu_title_hide",
+                                1
+                            )}
+                            onChange={handleChange}
+                            value={formModuleSetting.menu_title}
                             type="text"
                             disabled={props.disabled}
                         />
-                        <div className={`${formSettingsCategoria.menu_title_hide} errorControl`}>
-                            {formSettingsCategoria.menu_title_text_error}
+                        <div className={`${formModuleSetting.menu_title_hide} errorControl`}>
+                            {formModuleSetting.menu_title_text_error}
                         </div>
                     </div>
                 </FormGroup>
@@ -209,7 +206,7 @@ const FormSettingsCategory = props => {
                     <div>
                         <Label for="tooltips">Tooltips</Label>
                         <Input
-                            invalid={formSettingsCategoria.tooltips_error}
+                            invalid={formModuleSetting.tooltips_error}
                             id="tooltips"
                             name="tooltips"
                             onKeyUp={event => handlekey(
@@ -219,12 +216,12 @@ const FormSettingsCategory = props => {
                                 1
                             )}
                             onChange={handleChange}
-                            value={formSettingsCategoria.tooltips}
+                            value={formModuleSetting.tooltips}
                             type="text"
                             disabled={props.disabled}
                         />
-                        <div className={`${formSettingsCategoria.tooltips_hide} errorControl`}>
-                            {formSettingsCategoria.tooltips_text_error}
+                        <div className={`${formModuleSetting.tooltips_hide} errorControl`}>
+                            {formModuleSetting.tooltips_text_error}
                         </div>
                     </div>
                 </FormGroup>
@@ -232,7 +229,7 @@ const FormSettingsCategory = props => {
                     <div>
                         <Label for="test_description">Descripcion</Label>
                         <Input
-                            invalid={formSettingsCategoria.test_description_error}
+                            invalid={formModuleSetting.test_description_error}
                             id="test_description"
                             name="test_description"
                             onKeyUp={event => handlekey(
@@ -242,12 +239,12 @@ const FormSettingsCategory = props => {
                                 1
                             )}
                             onChange={handleChange}
-                            value={formSettingsCategoria.test_description}
+                            value={formModuleSetting.test_description}
                             type="textarea"
                             disabled={props.disabled}
                         />
-                        <div className={`${formSettingsCategoria.test_description_hide} errorControl`}>
-                            {formSettingsCategoria.test_description_text_error}
+                        <div className={`${formModuleSetting.test_description_hide} errorControl`}>
+                            {formModuleSetting.test_description_text_error}
                         </div>
                     </div>
                 </FormGroup>
@@ -267,20 +264,20 @@ const FormSettingsCategory = props => {
                             color="primary"
                             className="text-white"
                             variant="contained"
-                            onClick={handleDatosSettingsCategory}
+                            onClick={handleDatosSettingsModules}
                             disabled={props.disabled}
                         >
-                            {formSettingsCategoria.actionSettingsCategory === 0 ? 'Agregar' : 'Editar'}
+                            {formModuleSetting.actionSettingsModule === 0 ? 'Agregar' : 'Editar'}
                         </Button>
                     </div>
                 </FormGroup>
                 {
-                    props.dataSettings && props.dataSettings.length > 0 && (
+                    props.dataSettingsModules && props.dataSettingsModules.length > 0 && (
                         <FormGroup className="top form-group col-sm-12">
-                            <ListSettingsCategory
-                                data={props.dataSettings}
-                                updateSetting={updateSetting}
-                                deleteSetting={deleteSetting}
+                            <ListModuleSettings
+                                data={props.dataSettingsModules}
+                                updateSetting={updateSettingModules}
+                                deleteSetting={deleteSettingModules}
                                 disabled={props.disabled}
                             />
                         </FormGroup>
@@ -291,4 +288,4 @@ const FormSettingsCategory = props => {
     );
 }
 
-export default FormSettingsCategory;
+export default FormModuleSettings;

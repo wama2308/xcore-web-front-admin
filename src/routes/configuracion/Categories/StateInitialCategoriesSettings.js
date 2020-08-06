@@ -18,4 +18,7 @@ export const stateInitialCateroriesSettings = {
     test_description_error: false,
     test_description_text_error: '',
     test_description_hide: 'hide',
+
+    actionSettingsCategory: 0,
+    keySettingsCategory: -1,
 }

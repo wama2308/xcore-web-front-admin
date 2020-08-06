@@ -18,6 +18,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import {
     saveCategoryAction,
     updateCategoryAction,
+    addSettingsCategoryFunction,
+    updateSettingsCategoryFunction,
+    deleteSettingsCategoryFunction,
+    addSettingsModuleFunction,
+    updateSettingsModuleFunction,
+    deleteSettingsModuleFunction,
+    clenaSettingsModuleFunction,
 } from "../../../actions/CategoryActions"
 import { connect } from "react-redux";
 import Select from "react-select";
@@ -33,6 +40,8 @@ import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import FormDatosCategoria from './FormDatosCategoria';
 import FormSettingsCategory from './FormSettingsCategory';
+import FormModuleCategory from './FormModuleCategory';
+import { stateInitial } from './StateInitialCategories';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -74,11 +83,10 @@ const useStyles = makeStyles(theme => ({
 const ModalCategories = props => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
+    const [loading, setLoading] = React.useState('show');
+    const initialFormState = stateInitial;
+    const [formDatosCategoria, setFormDatosCategoria] = useState(initialFormState)
 
-    const initialState = {
-        loading: 'show',
-    }
-    const [modal, setModal] = useState(initialState)
 
     const handleChangeTabs = (event, newValue) => {
         setValue(newValue);
@@ -96,31 +104,197 @@ const ModalCategories = props => {
             };
             props.confirm(message, res => {
                 if (res) {
-                    setModal({
-                        ...initialState
+                    setLoading('show');
+                    setFormDatosCategoria({
+                        ...initialFormState
                     });
                     props.valorCloseModal(false);
                 }
             });
         } else {
-            setModal({
-                ...initialState
+            setLoading('show');
+            setFormDatosCategoria({
+                ...initialFormState
             });
             props.valorCloseModal(false);
         }
     };
 
+    const handleChange = e => {
+        const { name, value } = e.target;
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    };
+
+    const handlekey = (campoError, campoErrorText, hide, type) => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            [campoError]: type === 1 ? false : "",
+            [campoErrorText]: "",
+            [hide]: "hide",
+        }));
+    };
+
+    const handleChangeSelect = (value, select, selectError, selectErrorText, selecthide) => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            [select]: value,
+            [selectError]: "",
+            [selectErrorText]: "",
+            [selecthide]: "hide",
+        }));
+
+    };
+
+    const handleChangeSwitch = (name, error, textError, hide, option) => event => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            [name]: event.target.checked,
+            [error]: option === 1 ? false : '',
+            [textError]: '',
+            [hide]: 'hide',
+        }));
+        if (name === 'test') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                test_end_date: new Date(),
+            }));
+        }
+    };
+
+    const handleChangeExpirationDate = date => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            test_end_date: date,
+            test_end_date_error: "",
+            test_end_date_text_error: '',
+            test_end_date_hide: 'hide',
+        }));
+    }
+
+    const handlekeyMonto = (campo, campoError, campoErrorText, campohide) => {
+        let monto = event.target.value.replace(/\D/g, "")
+            .replace(/([0-9])([0-9]{2})$/, '$1.$2')
+            .replace(/\B(?=(\d{3})+(?!\d)\.?)/g, ",");
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            [campo]: monto,
+            [campoError]: false,
+            [campoErrorText]: '',
+            [campohide]: 'hide',
+        }));
+    };
+
+    const eventoBlur = (e) => {
+        if (formDatosCategoria.individual_amount === '' || formDatosCategoria.individual_amount === '0.0') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                individual_amount: '0'
+            }));
+        }
+    }
+
+    const eventoFocus = (e) => {
+        if (formDatosCategoria.individual_amount === '0') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                individual_amount: ''
+            }));
+        }
+    }
+
+    const cleanFields = () => {
+        setFormDatosCategoria({
+            ...initialFormState
+        });
+    }
+
+    const validate = () => {
+        let acum = "";
+        if (formDatosCategoria.name === '') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                name_error: true,
+                name_text_error: "Ingrese el nombre",
+                name_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.menu_icon === null) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                menu_icon_error: 'borderColor',
+                menu_icon_text_error: "Ingrese el nombre",
+                menu_icon_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.type === null) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                type_error: 'borderColor',
+                type_text_error: "Ingrese el nombre",
+                type_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.position === '') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                position_error: true,
+                position_text_error: "Ingrese el nombre",
+                position_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.individual_amount === '0' || formDatosCategoria.individual_amount === '') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                individual_amount_error: true,
+                individual_amount_text_error: "Ingrese el nombre",
+                individual_amount_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.test && formDatosCategoria.test_end_date === null) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                test_end_date_error: 'borderColor',
+                test_end_date_text_error: "Ingrese la fecha de culminacion de la prueba",
+                test_end_date_hide: 'show',
+            }))
+            acum = 1;
+        }
+
+        if (acum > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    const handleDatosCategory = event => {
+        event.preventDefault();
+        const isValid = validate();
+        if (isValid) {
+            console.log(1111);
+            handleNextTabsOne();
+        }
+    }
+
+    const handleActionCategories = () => {
+        console.log(777)
+    }
+
     useEffect(() => {
         if (props.option === 1) {
-            setModal(prev => ({ ...prev, loading: "hide" }))
+            //setFormDatosCategoria(prev => ({ ...prev, loading: "hide" }))
+            setLoading('hide');
         }
-        // else if (props.option === 2 || props.option === 3) {
-        //     if (Object.keys(props.provider.providerId).length > 0 && modal.actionReducer === 0) {
-        //         cargarData(props.provider.providerId);
-        //     }
-        // }
+
     }, [props.category])
-    console.log("value tab", props.category);
+    console.log("modal categoria ", props.category)
     return (
         <Dialog
             fullWidth={true}
@@ -130,7 +304,7 @@ const ModalCategories = props => {
             aria-labelledby="responsive-dialog-title"
             scroll="paper"
         >
-            {modal.loading === "hide" ? (
+            {loading === "hide" ? (
                 <div>
                     <DialogTitle id="form-dialog-title">
                         <div style={{ display: 'flex' }}>
@@ -162,16 +336,40 @@ const ModalCategories = props => {
                                 </Tabs>
                             </AppBar>
                             <TabPanel value={value} index={0}>
-                                <FormDatosCategoria 
+                                <FormDatosCategoria
                                     option={props.option}
-                                    handleNextTabsOne={handleNextTabsOne}
+                                    handleChange={handleChange}
+                                    handlekey={handlekey}
+                                    handleChangeSelect={handleChangeSelect}
+                                    handleChangeSwitch={handleChangeSwitch}
+                                    handleChangeExpirationDate={handleChangeExpirationDate}
+                                    handlekeyMonto={handlekeyMonto}
+                                    eventoBlur={eventoBlur}
+                                    eventoFocus={eventoFocus}
+                                    cleanFields={cleanFields}
+                                    handleDatosCategory={handleDatosCategory}
+                                    formDatosCategoria={formDatosCategoria}
+
                                 />
                             </TabPanel>
                             <TabPanel value={value} index={1}>
-                                <FormSettingsCategory />
+                                <FormSettingsCategory
+                                    addSettingsCategoryFunction={props.addSettingsCategoryFunction}
+                                    updateSettingsCategoryFunction={props.updateSettingsCategoryFunction}
+                                    deleteSettingsCategoryFunction={props.deleteSettingsCategoryFunction}
+                                    dataSettings={props.category.dataSettings}
+                                    confirm={props.confirm}
+                                />
                             </TabPanel>
                             <TabPanel value={value} index={2}>
-                                Item Three
+                                <FormModuleCategory 
+                                    addSettingsModuleFunction={props.addSettingsModuleFunction}
+                                    updateSettingsModuleFunction={props.updateSettingsModuleFunction}
+                                    deleteSettingsModuleFunction={props.deleteSettingsModuleFunction}
+                                    clenaSettingsModuleFunction={props.clenaSettingsModuleFunction}
+                                    dataSettingsModules={props.category.dataSettingsModules}
+                                    confirm={props.confirm}
+                                />
                             </TabPanel>
                         </div>
                     </DialogContent>
@@ -190,7 +388,7 @@ const ModalCategories = props => {
                                 color="primary"
                                 className="text-white"
                                 variant="contained"
-                            //onClick={handleActionCategories}
+                                onClick={handleActionCategories}
                             >
                                 {props.buttonFooter}
                             </Button>
@@ -229,8 +427,15 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    saveProviderAction: (data, callback) => dispatch(saveProviderAction(data, callback)),
+    saveCategoryAction: (data, callback) => dispatch(saveCategoryAction(data, callback)),
     updateCategoryAction: (data, callback) => dispatch(updateCategoryAction(data, callback)),
+    addSettingsCategoryFunction: (data, callback) => dispatch(addSettingsCategoryFunction(data, callback)),
+    updateSettingsCategoryFunction: (key, data, callback) => dispatch(updateSettingsCategoryFunction(key, data, callback)),
+    deleteSettingsCategoryFunction: (key) => dispatch(deleteSettingsCategoryFunction(key)),
+    addSettingsModuleFunction: (data, callback) => dispatch(addSettingsModuleFunction(data, callback)),
+    updateSettingsModuleFunction: (key, data, callback) => dispatch(updateSettingsModuleFunction(key, data, callback)),
+    deleteSettingsModuleFunction: (key) => dispatch(deleteSettingsModuleFunction(key)),
+    clenaSettingsModuleFunction: () => dispatch(clenaSettingsModuleFunction()),
 });
 
 export default connect(

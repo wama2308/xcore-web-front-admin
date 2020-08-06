@@ -2,7 +2,7 @@ export const stateInitialCateroriesModules = {
     name: "",
     name_error: false,
     name_text_error: '',
-    name_hide: 'hide',    
+    name_hide: 'hide',
 
     description: '',
     description_error: false,
@@ -43,5 +43,35 @@ export const stateInitialCateroriesModules = {
     test_end_date_error: "",
     test_end_date_text_error: '',
     test_end_date_hide: 'hide',
+
+    CollapseSettings: false,
+
+    actionModulesCategory: 0,
+    keyModulesCategory: -1,
+
+    //////////////////////////////////////
+
+    xc_language_id: null,
+    xc_language_id_error: '',
+    xc_language_id_text_error: '',
+    xc_language_id_hide: '',
+
+    menu_title: '',
+    menu_title_error: false,
+    menu_title_text_error: '',
+    menu_title_hide: 'hide',
+
+    tooltips: '',
+    tooltips_error: false,
+    tooltips_text_error: '',
+    tooltips_hide: 'hide',
+
+    test_description: '',
+    test_description_error: false,
+    test_description_text_error: '',
+    test_description_hide: 'hide',
+
+    actionSettingsModule: 0,
+    keySettingsModule: -1,
 
 }
