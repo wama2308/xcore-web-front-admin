@@ -73,11 +73,11 @@ export function getAppLayout(url) {
 export const url =
   process.env.NODE_ENV === "production"
     ? `http://xcoreweb.ddns.net:3333`
-    : `http://192.168.0.107:3333`;
+    : `http://192.168.0.110:3333`;
 export const urlWs =
   process.env.NODE_ENV === "production"
     ? `ws://xcoreweb.ddns.net:3333`
-    : `ws://192.168.0.107:3333`;
+    : `ws://192.168.0.110:3333`;
 
 export const getDataToken = () => {
   return new Promise((resolve) => {
@@ -609,4 +609,8 @@ export const formatDateDateTables = (data) => {
   let fecha = new Date(data);
   var options = { year: 'numeric', month: 'long', day: 'numeric' };
   return fecha.toLocaleDateString("es-ES", options);
+}
+
+export const formatDateTime = (date) => {
+  return moment(date).format("YYYY-MM-DD HH:mm:ss")
 }

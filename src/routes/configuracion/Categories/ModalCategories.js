@@ -42,6 +42,8 @@ import FormDatosCategoria from './FormDatosCategoria';
 import FormSettingsCategory from './FormSettingsCategory';
 import FormModuleCategory from './FormModuleCategory';
 import { stateInitial } from './StateInitialCategories';
+import { number_format, formatMonto, formatDateTime } from "../../../helpers/helpers";
+import moment from "moment";
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -83,7 +85,6 @@ const useStyles = makeStyles(theme => ({
 const ModalCategories = props => {
     const classes = useStyles();
     const [value, setValue] = React.useState(0);
-    const [loading, setLoading] = React.useState('show');
     const initialFormState = stateInitial;
     const [formDatosCategoria, setFormDatosCategoria] = useState(initialFormState)
 
@@ -104,7 +105,7 @@ const ModalCategories = props => {
             };
             props.confirm(message, res => {
                 if (res) {
-                    setLoading('show');
+                    setFormDatosCategoria(prev => ({ ...prev, loading: "show" }))
                     setFormDatosCategoria({
                         ...initialFormState
                     });
@@ -112,7 +113,7 @@ const ModalCategories = props => {
                 }
             });
         } else {
-            setLoading('show');
+            setFormDatosCategoria(prev => ({ ...prev, loading: "show" }))
             setFormDatosCategoria({
                 ...initialFormState
             });
@@ -164,13 +165,13 @@ const ModalCategories = props => {
         }
     };
 
-    const handleChangeExpirationDate = date => {
+    const handleChangeExpirationDate = (input, error, errorText, hide) => event => {
         setFormDatosCategoria(prev => ({
             ...prev,
-            test_end_date: date,
-            test_end_date_error: "",
-            test_end_date_text_error: '',
-            test_end_date_hide: 'hide',
+            [input]: event,
+            [error]: '',
+            [errorText]: '',
+            [hide]: 'hide',
         }));
     }
 
@@ -205,10 +206,28 @@ const ModalCategories = props => {
         }
     }
 
-    const cleanFields = () => {
-        setFormDatosCategoria({
-            ...initialFormState
-        });
+    const cleanFieldsSettings = () => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            xc_language_id: null,
+            xc_language_id_error: '',
+            xc_language_id_text_error: '',
+            xc_language_id_hide: '',
+            menu_title: '',
+            menu_title_error: false,
+            menu_title_text_error: '',
+            menu_title_hide: 'hide',
+            tooltips: '',
+            tooltips_error: false,
+            tooltips_text_error: '',
+            tooltips_hide: 'hide',
+            test_description: '',
+            test_description_error: false,
+            test_description_text_error: '',
+            test_description_hide: 'hide',
+            actionSettingsCategory: 0,
+            keySettingsCategory: -1,
+        }));
     }
 
     const validate = () => {
@@ -278,23 +297,161 @@ const ModalCategories = props => {
         event.preventDefault();
         const isValid = validate();
         if (isValid) {
-            console.log(1111);
             handleNextTabsOne();
         }
     }
 
-    const handleActionCategories = () => {
-        console.log(777)
+    /////////////////////////////////////////////////////////CATEGORY SETTINGS
+
+    const validateSettings = () => {
+        let acum = "";
+        if (formDatosCategoria.xc_language_id === null) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                xc_language_id_error: 'borderColor',
+                xc_language_id_text_error: "Seleccione el lenguaje",
+                xc_language_id_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.menu_title === '') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                menu_title_error: true,
+                menu_title_text_error: "Ingrese el titulo",
+                menu_title_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (props.category.dataSettings.find(data => data.xc_language_id.value === formDatosCategoria.xc_language_id.value) &&
+            (props.category.dataSettings.findIndex(data => data.xc_language_id.value === formDatosCategoria.xc_language_id.value) !== formDatosCategoria.keySettingsCategory)
+        ) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                xc_language_id_error: 'borderColor',
+                xc_language_id_text_error: "Este lenguaje ya esta registrado",
+                xc_language_id_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (acum > 0) {
+            return false;
+        }
+        return true;
+    }
+
+    const handleDatosSettingsCategory = event => {
+        event.preventDefault();
+        const isValid = validateSettings();
+        if (isValid) {
+            let data = {
+                xc_language_id: formDatosCategoria.xc_language_id,
+                menu_title: formDatosCategoria.menu_title,
+                tooltips: formDatosCategoria.tooltips,
+                test_description: formDatosCategoria.test_description,
+            };
+            if (formDatosCategoria.actionSettingsCategory === 0) {
+                props.addSettingsCategoryFunction(data, () => { cleanFieldsSettings() });
+            } else {
+                props.updateSettingsCategoryFunction(formDatosCategoria.keySettingsCategory, data, () => { cleanFieldsSettings() });
+            }
+        }
+    }
+
+    const updateSetting = (key, data) => {
+        const message = {
+            title: "Editar Configuracion",
+            info: "¿Esta seguro que desea editar esta configuracion?"
+        };
+        props.confirm(message, res => {
+            if (res) {
+                setFormDatosCategoria(prev => ({
+                    ...prev,
+                    xc_language_id: data.xc_language_id,
+                    menu_title: data.menu_title,
+                    tooltips: data.tooltips,
+                    test_description: data.test_description,
+                    actionSettingsCategory: 1,
+                    keySettingsCategory: key
+                }))
+            }
+        });
+    }
+
+    const deleteSetting = (key) => {
+        if (formDatosCategoria.keySettingsCategory === key) {
+            NotificationManager.warning("¡La configuracion esta en proceso de edicion, no puede ser eliminada!");
+        } else {
+            const message = {
+                title: "Eliminar Configuracion",
+                info: "¿Esta seguro que desea eliminar este configuracion?"
+            };
+            props.confirm(message, res => {
+                if (res) {
+                    props.deleteSettingsCategoryFunction(key);
+                }
+            });
+        }
+    }
+    /////////////////////////////////////////////////////////CATEGORY SETTINGS
+
+    const arraysSettings = (data) => {
+        let settings = [];
+        data.map((dataSettings, i) => {
+            settings.push(
+                {
+                    xc_language_id: dataSettings.xc_language_id.value,
+                    menu_title: dataSettings.menu_title,
+                    tooltips: dataSettings.tooltips,
+                    test_description: dataSettings.test_description,
+                }
+            );
+        });
+        return settings;
+    }
+
+    const handleActionCategories = event => {
+        event.preventDefault();
+        const isValid = validate();
+        if (isValid && props.category.dataSettings.length > 0) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                loading: "show"
+            }));
+            let dataSend = {
+                _id: props.data ? props.data.id : 0,
+                name: formDatosCategoria.name,
+                menu_icon: formDatosCategoria.menu_icon.value,
+                description: formDatosCategoria.description,
+                type: formDatosCategoria.type.value,
+                new_item: formDatosCategoria.new_item,
+                open: formDatosCategoria.open,
+                position: formDatosCategoria.position,
+                individual_amount: formatMonto(formDatosCategoria.individual_amount),
+                test: formDatosCategoria.test,
+                test_end_date: formatDateTime(formDatosCategoria.test_end_date),
+                menu_settings: arraysSettings(props.category.dataSettings),
+            }
+            if (props.option === 1) {
+                props.saveCategoryAction(dataSend, () => { closeModal(1); });
+            }
+            if (props.option === 3) {
+                props.updateCategoryAction(dataSend, () => { closeModal(1); });
+            }
+        } else if (!isValid) {
+            NotificationManager.warning("¡Verifique los campos de la pestaña datos de la categoria!");
+        } else if (props.category.dataSettings.length === 0) {
+            NotificationManager.warning("¡Debe agregar al menos una configuracion!");
+        }
     }
 
     useEffect(() => {
         if (props.option === 1) {
-            //setFormDatosCategoria(prev => ({ ...prev, loading: "hide" }))
-            setLoading('hide');
+            setFormDatosCategoria(prev => ({ ...prev, loading: "hide" }))
         }
 
     }, [props.category])
-    console.log("modal categoria ", props.category)
+    //console.log("modal categoria ", props.category)
     return (
         <Dialog
             fullWidth={true}
@@ -304,7 +461,7 @@ const ModalCategories = props => {
             aria-labelledby="responsive-dialog-title"
             scroll="paper"
         >
-            {loading === "hide" ? (
+            {formDatosCategoria.loading === "hide" ? (
                 <div>
                     <DialogTitle id="form-dialog-title">
                         <div style={{ display: 'flex' }}>
@@ -330,9 +487,8 @@ const ModalCategories = props => {
                                     onChange={handleChangeTabs}
                                     aria-label="simple tabs example"
                                 >
-                                    <Tab label="Datos" {...a11yProps(0)} />
+                                    <Tab label="Datos de la categoria" {...a11yProps(0)} />
                                     <Tab label="Configuracion" {...a11yProps(1)} />
-                                    <Tab label="Modulos" {...a11yProps(2)} />
                                 </Tabs>
                             </AppBar>
                             <TabPanel value={value} index={0}>
@@ -346,31 +502,44 @@ const ModalCategories = props => {
                                     handlekeyMonto={handlekeyMonto}
                                     eventoBlur={eventoBlur}
                                     eventoFocus={eventoFocus}
-                                    cleanFields={cleanFields}
-                                    handleDatosCategory={handleDatosCategory}
                                     formDatosCategoria={formDatosCategoria}
-
                                 />
                             </TabPanel>
                             <TabPanel value={value} index={1}>
                                 <FormSettingsCategory
-                                    addSettingsCategoryFunction={props.addSettingsCategoryFunction}
-                                    updateSettingsCategoryFunction={props.updateSettingsCategoryFunction}
-                                    deleteSettingsCategoryFunction={props.deleteSettingsCategoryFunction}
+                                    handleChange={handleChange}
+                                    handlekey={handlekey}
+                                    handleChangeSelect={handleChangeSelect}
+                                    handleDatosSettingsCategory={handleDatosSettingsCategory}
+                                    updateSetting={updateSetting}
+                                    deleteSetting={deleteSetting}
+                                    dataLanguajes={props.dataGeneral.dataLanguajes}
                                     dataSettings={props.category.dataSettings}
+                                    formDatosCategoria={formDatosCategoria}
                                     confirm={props.confirm}
+                                    option={props.option}
                                 />
                             </TabPanel>
-                            <TabPanel value={value} index={2}>
-                                <FormModuleCategory 
-                                    addSettingsModuleFunction={props.addSettingsModuleFunction}
-                                    updateSettingsModuleFunction={props.updateSettingsModuleFunction}
-                                    deleteSettingsModuleFunction={props.deleteSettingsModuleFunction}
-                                    clenaSettingsModuleFunction={props.clenaSettingsModuleFunction}
+                            {/* <TabPanel value={value} index={2}>
+                                <FormModuleCategory
+                                    handleChange={handleChange}
+                                    handlekey={handlekey}
+                                    handleChangeSelect={handleChangeSelect}
+                                    handleChangeSwitch={handleChangeSwitch}
+                                    handleChangeExpirationDate={handleChangeExpirationDate}
+                                    handlekeyMonto={handlekeyMonto}
+                                    eventoBlur={eventoBlur}
+                                    eventoFocus={eventoFocus}
+                                    handleDatosModulesSettings={handleDatosModulesSettings}
+                                    updateModuleSetting={updateModuleSetting}
+                                    deleteModuleSetting={deleteModuleSetting}
+                                    collapseFunction={collapseFunction}
                                     dataSettingsModules={props.category.dataSettingsModules}
+                                    formDatosCategoria={formDatosCategoria}
                                     confirm={props.confirm}
+                                    option={props.option}
                                 />
-                            </TabPanel>
+                            </TabPanel> */}
                         </div>
                     </DialogContent>
                     <DialogActions>
@@ -388,9 +557,12 @@ const ModalCategories = props => {
                                 color="primary"
                                 className="text-white"
                                 variant="contained"
-                                onClick={handleActionCategories}
+                                onClick={value === 0 ? handleDatosCategory : handleActionCategories}
                             >
-                                {props.buttonFooter}
+                                {
+                                    value === 0 ? 'Siguiente' : props.buttonFooter
+                                }
+
                             </Button>
                         }
 

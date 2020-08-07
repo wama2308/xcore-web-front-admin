@@ -40,7 +40,7 @@ const ListModuleSettings = props => {
                                                     <IconButton aria-label="Delete"
                                                         title="Editar Configuracion"
                                                         className="iconButtons"
-                                                        onClick={() => { props.updateSetting(i, data); }}
+                                                        onClick={() => { props.updateModuleSetting(i, data); }}
                                                         disabled={props.disabled}
                                                     >
                                                         <Edit className="iconTable" />
@@ -48,7 +48,7 @@ const ListModuleSettings = props => {
                                                     <IconButton aria-label="Delete"
                                                         title="Eliminar Configuracion"
                                                         className="iconButtons"
-                                                        onClick={() => { props.deleteSetting(i); }}
+                                                        onClick={() => { props.deleteModuleSetting(i); }}
                                                         disabled={props.disabled}
                                                     >
                                                         <Delete className="iconTable" />

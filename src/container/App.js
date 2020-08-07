@@ -62,7 +62,7 @@ class App extends Component {
    componentDidMount() {
       if (localStorage.getItem("token") && this.props.dataGeneral === null && this.state.actionReducer === 0) {
          this.setState({ actionReducer: 1 });
-         //this.props.ConfigGeneralFunction();
+         this.props.ConfigGeneralFunction();
          //this.props.verify();
          //this.props.addDataBaseLocalStore();
       }
@@ -74,7 +74,7 @@ class App extends Component {
       }
       if (localStorage.getItem("token") && props.dataGeneral === null && this.state.actionReducer === 0) {
          this.setState({ actionReducer: 1 });
-         // props.ConfigGeneralFunction();
+         props.ConfigGeneralFunction();
          //props.addDataBaseLocalStore();   
       }
    }
@@ -97,7 +97,7 @@ class App extends Component {
       const { location, match } = this.props;
       let menuRute;
       if (this.props.dataGeneral) {
-         menuRute = this.existMenuRute(this.props.dataGeneral.dataMenu, location.pathname);
+         //menuRute = this.existMenuRute(this.props.dataGeneral.dataMenu, location.pathname);
       }
 
       if (!token && location.pathname === "/forgot/password") {

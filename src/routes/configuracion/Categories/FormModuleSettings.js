@@ -17,137 +17,10 @@ import Switch from '@material-ui/core/Switch';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import "../../../assets/css/style.css";
-import { stateInitialCateroriesModules } from './StateInitialCategoriesModules';
 import ListModuleSettings from "./ListModuleSettings";
 
 const FormModuleSettings = props => {
-    const initialFormState = stateInitialCateroriesModules;
-    const [formModuleSetting, setFormModuleSetting] = useState(initialFormState)
-
-    const handleChange = e => {
-        const { name, value } = e.target;
-        setFormModuleSetting(prev => ({
-            ...prev,
-            [name]: value
-        }))
-    };
-
-    const handlekey = (campoError, campoErrorText, hide, type) => {
-        setFormModuleSetting(prev => ({
-            ...prev,
-            [campoError]: type === 1 ? false : "",
-            [campoErrorText]: "",
-            [hide]: "hide",
-        }));
-    };
-
-    const handleChangeSelect = (value, select, selectError, selectErrorText, selecthide) => {
-        setFormModuleSetting(prev => ({
-            ...prev,
-            [select]: value,
-            [selectError]: "",
-            [selectErrorText]: "",
-            [selecthide]: "hide",
-        }));
-
-    };
-
-    const cleanFields = () => {
-        setFormModuleSetting({
-            ...initialFormState
-        });        
-    }
-
-    const validate = () => {
-        let acum = "";
-        if (formModuleSetting.xc_language_id === null) {
-            setFormModuleSetting(prev => ({
-                ...prev,
-                xc_language_id_error: 'borderColor',
-                xc_language_id_text_error: "Seleccione el lenguaje",
-                xc_language_id_hide: 'show',
-            }))
-            acum = 1;
-        }
-        if (formModuleSetting.menu_title === '') {
-            setFormModuleSetting(prev => ({
-                ...prev,
-                menu_title_error: true,
-                menu_title_text_error: "Ingrese el titulo",
-                menu_title_hide: 'show',
-            }))
-            acum = 1;
-        }
-        if (props.dataSettingsModules.find(data => data.xc_language_id.value === formModuleSetting.xc_language_id.value) &&
-            (props.dataSettingsModules.findIndex(data => data.xc_language_id.value === formModuleSetting.xc_language_id.value) !== formModuleSetting.keySettingsModule)
-        ) {
-            setFormModuleSetting(prev => ({
-                ...prev,
-                xc_language_id_error: 'borderColor',
-                xc_language_id_text_error: "Este lenguaje ya esta registrado",
-                xc_language_id_hide: 'show',
-            }))
-            acum = 1;
-        }
-        if (acum > 0) {
-            return false;
-        }
-        return true;
-    }
-
-    const handleDatosSettingsModules = event => {
-        event.preventDefault();
-        const isValid = validate();
-        if (isValid) {
-            let data = {
-                xc_language_id: formModuleSetting.xc_language_id,
-                menu_title: formModuleSetting.menu_title,
-                tooltips: formModuleSetting.tooltips,
-                test_description: formModuleSetting.test_description,
-            };
-            if (formModuleSetting.actionSettingsModule === 0) {
-                props.addSettingsModuleFunction(data, () => { cleanFields() });
-            } else {
-                props.updateSettingsModuleFunction(formModuleSetting.keySettingsModule, data, () => { cleanFields() });
-            }
-        }
-    }
-
-    const updateSettingModules = (key, data) => {
-        const message = {
-            title: "Editar Configuracion",
-            info: "¿Esta seguro que desea editar esta configuracion?"
-        };
-        props.confirm(message, res => {
-            if (res) {
-                setFormModuleSetting(prev => ({
-                    ...prev,
-                    xc_language_id: data.xc_language_id,
-                    menu_title: data.menu_title,
-                    tooltips: data.tooltips,
-                    test_description: data.test_description,
-                    actionSettingsModule: 1,
-                    keySettingsModule: key
-                }))
-            }
-        });
-    }
-
-    const deleteSettingModules = (key) => {
-        if (formModuleSetting.keySettingsModule === key) {
-            NotificationManager.warning("¡La configuracion esta en proceso de edicion, no puede ser eliminada!");
-        } else {
-            const message = {
-                title: "Eliminar Configuracion",
-                info: "¿Esta seguro que desea eliminar este configuracion?"
-            };
-            props.confirm(message, res => {
-                if (res) {
-                    props.deleteSettingsModuleFunction(key);
-                }
-            });
-        }
-    }
+    
 
 
     return (
@@ -155,96 +28,96 @@ const FormModuleSettings = props => {
             <div className="row">
                 <FormGroup className="top form-group col-sm-6">
                     <div>
-                        <Label for="xc_language_id">Lenguaje</Label>
-                        <div className={formModuleSetting.xc_language_id_error}>
+                        <Label for="xc_language_id_module">Lenguaje</Label>
+                        <div className={props.formDatosCategoria.xc_language_id_module_error}>
                             <Select
                                 isSearchable
                                 isClearable
                                 isDisabled={props.disabled}
-                                name="xc_language_id"
-                                id="xc_language_id"
-                                value={formModuleSetting.xc_language_id}
-                                onChange={event => handleChangeSelect(
+                                name="xc_language_id_module"
+                                id="xc_language_id_module"
+                                value={props.formDatosCategoria.xc_language_id_module}
+                                onChange={event => props.handleChangeSelect(
                                     event,
-                                    "xc_language_id",
-                                    "xc_language_id_error",
-                                    "xc_language_id_text_error",
-                                    "xc_language_id_hide"
+                                    "xc_language_id_module",
+                                    "xc_language_id_module_error",
+                                    "xc_language_id_module_text_error",
+                                    "xc_language_id_module_hide"
                                 )}
                                 options={[{ label: 'Español', value: 1 }, { label: 'Ingles', value: 2 }]}
                             />
                         </div>
-                        <div className={`${formModuleSetting.xc_language_id_hide} errorControl`}>
-                            {formModuleSetting.xc_language_id_text_error}
+                        <div className={`${props.formDatosCategoria.xc_language_id_module_hide} errorControl`}>
+                            {props.formDatosCategoria.xc_language_id_module_text_error}
                         </div>
                     </div>
                 </FormGroup>
                 <FormGroup className="top form-group col-sm-6">
                     <div>
-                        <Label for="menu_title">Titulo</Label>
+                        <Label for="menu_title_module">Titulo</Label>
                         <Input
-                            invalid={formModuleSetting.menu_title_error}
-                            id="menu_title"
-                            name="menu_title"
-                            onKeyUp={event => handlekey(
-                                "menu_title_error",
-                                "menu_title_text_error",
-                                "menu_title_hide",
+                            invalid={props.formDatosCategoria.menu_title_module_error}
+                            id="menu_title_module"
+                            name="menu_title_module"
+                            onKeyUp={event => props.handlekey(
+                                "menu_title_module_error",
+                                "menu_title_module_text_error",
+                                "menu_title_module_hide",
                                 1
                             )}
-                            onChange={handleChange}
-                            value={formModuleSetting.menu_title}
+                            onChange={props.handleChange}
+                            value={props.formDatosCategoria.menu_title_module}
                             type="text"
                             disabled={props.disabled}
                         />
-                        <div className={`${formModuleSetting.menu_title_hide} errorControl`}>
-                            {formModuleSetting.menu_title_text_error}
+                        <div className={`${props.formDatosCategoria.menu_title_module_hide} errorControl`}>
+                            {props.formDatosCategoria.menu_title_module_text_error}
                         </div>
                     </div>
                 </FormGroup>
                 <FormGroup className="top form-group col-sm-6">
                     <div>
-                        <Label for="tooltips">Tooltips</Label>
+                        <Label for="tooltips_module">Tooltips</Label>
                         <Input
-                            invalid={formModuleSetting.tooltips_error}
-                            id="tooltips"
-                            name="tooltips"
-                            onKeyUp={event => handlekey(
-                                "tooltips_error",
-                                "tooltips_text_error",
-                                "tooltips_hide",
+                            invalid={props.formDatosCategoria.tooltips_module_error}
+                            id="tooltips_module"
+                            name="tooltips_module"
+                            onKeyUp={event => props.handlekey(
+                                "tooltips_module_error",
+                                "tooltips_module_text_error",
+                                "tooltips_module_hide",
                                 1
                             )}
-                            onChange={handleChange}
-                            value={formModuleSetting.tooltips}
+                            onChange={props.handleChange}
+                            value={props.formDatosCategoria.tooltips_module}
                             type="text"
                             disabled={props.disabled}
                         />
-                        <div className={`${formModuleSetting.tooltips_hide} errorControl`}>
-                            {formModuleSetting.tooltips_text_error}
+                        <div className={`${props.formDatosCategoria.tooltips_module_hide} errorControl`}>
+                            {props.formDatosCategoria.tooltips_module_text_error}
                         </div>
                     </div>
                 </FormGroup>
                 <FormGroup className="top form-group col-sm-6">
                     <div>
-                        <Label for="test_description">Descripcion</Label>
+                        <Label for="test_module_description">Descripcion</Label>
                         <Input
-                            invalid={formModuleSetting.test_description_error}
-                            id="test_description"
-                            name="test_description"
-                            onKeyUp={event => handlekey(
-                                "test_description_error",
-                                "test_description_text_error",
-                                "test_description_hide",
+                            invalid={props.formDatosCategoria.test_module_description_error}
+                            id="test_module_description"
+                            name="test_module_description"
+                            onKeyUp={event => props.handlekey(
+                                "test_module_description_error",
+                                "test_module_description_text_error",
+                                "test_module_description_hide",
                                 1
                             )}
-                            onChange={handleChange}
-                            value={formModuleSetting.test_description}
+                            onChange={props.handleChange}
+                            value={props.formDatosCategoria.test_module_description}
                             type="textarea"
                             disabled={props.disabled}
                         />
-                        <div className={`${formModuleSetting.test_description_hide} errorControl`}>
-                            {formModuleSetting.test_description_text_error}
+                        <div className={`${props.formDatosCategoria.test_module_description_hide} errorControl`}>
+                            {props.formDatosCategoria.test_module_description_text_error}
                         </div>
                     </div>
                 </FormGroup>
@@ -255,7 +128,7 @@ const FormModuleSettings = props => {
                             color="danger"
                             className="text-white"
                             variant="contained"
-                            onClick={cleanFields}
+                            onClick={props.cleanFields}
                             disabled={props.disabled}
                         >
                             Limpiar
@@ -264,10 +137,10 @@ const FormModuleSettings = props => {
                             color="primary"
                             className="text-white"
                             variant="contained"
-                            onClick={handleDatosSettingsModules}
+                            onClick={props.handleDatosModulesSettings}
                             disabled={props.disabled}
                         >
-                            {formModuleSetting.actionSettingsModule === 0 ? 'Agregar' : 'Editar'}
+                            {props.formDatosCategoria.actionSettingsModule === 0 ? 'Agregar' : 'Editar'}
                         </Button>
                     </div>
                 </FormGroup>
@@ -276,8 +149,8 @@ const FormModuleSettings = props => {
                         <FormGroup className="top form-group col-sm-12">
                             <ListModuleSettings
                                 data={props.dataSettingsModules}
-                                updateSetting={updateSettingModules}
-                                deleteSetting={deleteSettingModules}
+                                updateModuleSetting={props.updateModuleSetting}
+                                deleteModuleSetting={props.deleteModuleSetting}
                                 disabled={props.disabled}
                             />
                         </FormGroup>

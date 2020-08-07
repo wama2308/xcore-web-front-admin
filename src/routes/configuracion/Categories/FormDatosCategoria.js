@@ -20,8 +20,8 @@ import "../../../assets/css/style.css";
 import { array_icons_menu } from './IconsArray';
 
 const FormDatosCategoria = props => {
-   
-    
+
+
 
     return (
         <div>
@@ -215,7 +215,12 @@ const FormDatosCategoria = props => {
                         <div className={props.formDatosCategoria.test_end_date_error}>
                             <DatePicker
                                 selected={props.formDatosCategoria.test_end_date}
-                                onChange={props.handleChangeExpirationDate}
+                                onChange={props.handleChangeExpirationDate(                                    
+                                    "test_end_date",
+                                    "test_end_date_error",
+                                    "test_end_date_text_error",
+                                    "test_end_date_hide"
+                                )}
                                 dateFormat="dd-MM-yyyy"
                                 isClearable={props.option === 2 ? !props.disabled
                                     : props.formDatosCategoria.test}
@@ -257,30 +262,7 @@ const FormDatosCategoria = props => {
                             {props.formDatosCategoria.description_text_error}
                         </div>
                     </div>
-                </FormGroup>
-                <FormGroup className="top form-group col-sm-12">
-                    <div className="" style={{ marginLeft: 'auto' }}>
-                        <Button
-                            style={{ marginRight: '5px' }}
-                            color="danger"
-                            className="text-white"
-                            variant="contained"
-                            onClick={props.cleanFields}
-                            disabled={props.disabled}
-                        >
-                            Limpiar
-                        </Button>
-                        <Button
-                            color="primary"
-                            className="text-white"
-                            variant="contained"
-                            onClick={props.handleDatosCategory}
-                            disabled={props.disabled}
-                        >
-                            Siguiente
-                        </Button>
-                    </div>
-                </FormGroup>
+                </FormGroup>                
             </div>
         </div >
     );
