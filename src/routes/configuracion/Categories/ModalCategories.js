@@ -44,6 +44,7 @@ import FormModuleCategory from './FormModuleCategory';
 import { stateInitial } from './StateInitialCategories';
 import { number_format, formatMonto, formatDateTime } from "../../../helpers/helpers";
 import moment from "moment";
+import { array_icons_menu } from './IconsArray';
 
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -227,6 +228,7 @@ const ModalCategories = props => {
             test_description_hide: 'hide',
             actionSettingsCategory: 0,
             keySettingsCategory: -1,
+            settingId: 0,
         }));
     }
 
@@ -237,6 +239,15 @@ const ModalCategories = props => {
                 ...prev,
                 name_error: true,
                 name_text_error: "Ingrese el nombre",
+                name_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.name.length < 2) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                name_error: true,
+                name_text_error: "El nombre debe contener al menos dos caracteres",
                 name_hide: 'show',
             }))
             acum = 1;
@@ -286,6 +297,15 @@ const ModalCategories = props => {
             }))
             acum = 1;
         }
+        if (formDatosCategoria.description !== '' && formDatosCategoria.description.length < 5) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                description_error: false,
+                description_text_error: "La descripcion debe contener al menos cinco caracteres",
+                description_hide: 'show',
+            }))
+            acum = 1;
+        }
 
         if (acum > 0) {
             return false;
@@ -323,6 +343,33 @@ const ModalCategories = props => {
             }))
             acum = 1;
         }
+        if (formDatosCategoria.menu_title.length < 2) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                menu_title_error: true,
+                menu_title_text_error: "El titulo debe contener al menos dos caracteres",
+                menu_title_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.tooltips !== '' && formDatosCategoria.tooltips.length < 3) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                tooltips_error: true,
+                tooltips_text_error: "El tooltip debe contener al menos tres caracteres",
+                tooltips_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (formDatosCategoria.test_description !== '' && formDatosCategoria.test_description.length < 5) {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                test_description_error: true,
+                test_description_text_error: "La descripcion de la prueba debe contener al menos cinco caracteres",
+                test_description_hide: 'show',
+            }))
+            acum = 1;
+        }
         if (props.category.dataSettings.find(data => data.xc_language_id.value === formDatosCategoria.xc_language_id.value) &&
             (props.category.dataSettings.findIndex(data => data.xc_language_id.value === formDatosCategoria.xc_language_id.value) !== formDatosCategoria.keySettingsCategory)
         ) {
@@ -345,7 +392,10 @@ const ModalCategories = props => {
         const isValid = validateSettings();
         if (isValid) {
             let data = {
-                xc_language_id: formDatosCategoria.xc_language_id,
+                id: formDatosCategoria.settingId,
+                xc_category_id: props.data ? props.data.id : 0,
+                xc_language_id: formDatosCategoria.xc_language_id.value,
+                language: formDatosCategoria.xc_language_id,
                 menu_title: formDatosCategoria.menu_title,
                 tooltips: formDatosCategoria.tooltips,
                 test_description: formDatosCategoria.test_description,
@@ -359,6 +409,7 @@ const ModalCategories = props => {
     }
 
     const updateSetting = (key, data) => {
+        console.log("updateSetting ", data)
         const message = {
             title: "Editar Configuracion",
             info: "¿Esta seguro que desea editar esta configuracion?"
@@ -367,10 +418,13 @@ const ModalCategories = props => {
             if (res) {
                 setFormDatosCategoria(prev => ({
                     ...prev,
-                    xc_language_id: data.xc_language_id,
+                    settingId: data.id,
+                    xc_category_id: data.xc_category_id,
+                    xc_language_id: data.language,
+                    language: data.language,
                     menu_title: data.menu_title,
-                    tooltips: data.tooltips,
-                    test_description: data.test_description,
+                    tooltips: data.tooltips === null ? '' : data.tooltips,
+                    test_description: data.test_description === null ? '' : data.test_description,
                     actionSettingsCategory: 1,
                     keySettingsCategory: key
                 }))
@@ -410,10 +464,17 @@ const ModalCategories = props => {
         return settings;
     }
 
+    const loadingShowAction = () => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            loading: "hide"
+        }));
+    }
+
     const handleActionCategories = event => {
         event.preventDefault();
         const isValid = validate();
-        if (isValid && props.category.dataSettings.length > 0) {
+        if (isValid && props.category.dataSettings.length > 0 && props.category.dataSettings.length === props.dataGeneral.dataLanguajes.length) {
             setFormDatosCategoria(prev => ({
                 ...prev,
                 loading: "show"
@@ -433,25 +494,50 @@ const ModalCategories = props => {
                 menu_settings: arraysSettings(props.category.dataSettings),
             }
             if (props.option === 1) {
-                props.saveCategoryAction(dataSend, () => { closeModal(1); });
+                props.saveCategoryAction(dataSend, () => { closeModal(1); }, () => { loadingShowAction });
             }
             if (props.option === 3) {
-                props.updateCategoryAction(dataSend, () => { closeModal(1); });
+                props.updateCategoryAction(dataSend, () => { closeModal(1); }, () => { loadingShowAction });
             }
         } else if (!isValid) {
             NotificationManager.warning("¡Verifique los campos de la pestaña datos de la categoria!");
+            handleNextTabsOne();
         } else if (props.category.dataSettings.length === 0) {
             NotificationManager.warning("¡Debe agregar al menos una configuracion!");
+        } else if (props.category.dataSettings.length !== props.dataGeneral.dataLanguajes.length) {
+            NotificationManager.warning("¡La cantidad de configuraciones debe ser igual a la cantidad de lenguajes registrados!");
         }
+    }
+
+    const cargarData = (data) => {        
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            name: data.name,
+            menu_icon: array_icons_menu.find(dataMenuIcon => dataMenuIcon.value === data.menu_icon),
+            description: data.description === null ? '' : data.description,
+            type: formDatosCategoria.array_type_category.find(dataType => dataType.value === data.type),
+            new_item: data.new_item === 0 ? false : true,
+            open: data.open === 0 ? false : true,
+            position: data.position,
+            individual_amount: number_format(data.individual_amount, 2),
+            test: data.test === 0 ? false : true,
+            test_end_date: new Date(data.test_end_date),
+            loading: 'hide',
+            actionReducer: 1,
+        }));
     }
 
     useEffect(() => {
         if (props.option === 1) {
             setFormDatosCategoria(prev => ({ ...prev, loading: "hide" }))
+        } else if (props.option === 2 || props.option === 3) {
+            if (Object.keys(props.category.categoryId).length > 0 && formDatosCategoria.actionReducer === 0) {
+                cargarData(props.category.categoryId);
+            }
         }
 
-    }, [props.category])
-    //console.log("modal categoria ", props.category)
+    }, [props])
+    //console.log("modal categoria ", props.category.categoryId)
     return (
         <Dialog
             fullWidth={true}
@@ -494,6 +580,7 @@ const ModalCategories = props => {
                             <TabPanel value={value} index={0}>
                                 <FormDatosCategoria
                                     option={props.option}
+                                    disabled={props.disabled}
                                     handleChange={handleChange}
                                     handlekey={handlekey}
                                     handleChangeSelect={handleChangeSelect}
@@ -507,6 +594,7 @@ const ModalCategories = props => {
                             </TabPanel>
                             <TabPanel value={value} index={1}>
                                 <FormSettingsCategory
+                                    disabled={props.disabled}
                                     handleChange={handleChange}
                                     handlekey={handlekey}
                                     handleChangeSelect={handleChangeSelect}
@@ -599,8 +687,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-    saveCategoryAction: (data, callback) => dispatch(saveCategoryAction(data, callback)),
-    updateCategoryAction: (data, callback) => dispatch(updateCategoryAction(data, callback)),
+    saveCategoryAction: (data, callback, callbackLoading) => dispatch(saveCategoryAction(data, callback, callbackLoading)),
+    updateCategoryAction: (data, callback, callbackLoading) => dispatch(updateCategoryAction(data, callback, callbackLoading)),
     addSettingsCategoryFunction: (data, callback) => dispatch(addSettingsCategoryFunction(data, callback)),
     updateSettingsCategoryFunction: (key, data, callback) => dispatch(updateSettingsCategoryFunction(key, data, callback)),
     deleteSettingsCategoryFunction: (key) => dispatch(deleteSettingsCategoryFunction(key)),

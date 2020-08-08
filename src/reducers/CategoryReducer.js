@@ -1,4 +1,4 @@
-import { calculatePage } from '../helpers/helpers';
+import { calculatePage, formatDateDateTables } from '../helpers/helpers';
 
 const allCategoryFunction = (state, payload) => {
     let pagination = {
@@ -32,20 +32,22 @@ const allCategoryDisabledFunction = (state, payload) => {
 }
 
 const loadCategoryIdAction = (state, payload) => {
-    console.log(payload)
     let estado = state;
-    // let data = {
-    //     country: payload.data.country,
-    //     province: payload.data.province,
-    //     district: payload.data.district,
-    //     name: payload.data.name,
-    //     ruc: payload.data.ruc,
-    //     type_identity: payload.data.type_identity,
-    //     web: payload.data.web,
-    //     _id: payload.data._id,
-    // }    
-    // estado.providerId = data;
-    // estado.contactsProvider = payload.data.contacts;
+    let data = {
+        id: payload.data.id,
+        name: payload.data.name,
+        menu_icon: payload.data.menu_icon,
+        description: payload.data.description,
+        type: payload.data.type,
+        new_item: payload.data.new_item,
+        open: payload.data.open,
+        position: payload.data.position,
+        individual_amount: payload.data.individual_amount,
+        test: payload.data.test,
+        test_end_date: payload.data.test_end_date,
+    }
+    estado.categoryId = data;
+    estado.dataSettings = payload.data.settings;
     return estado;
 }
 
@@ -95,6 +97,40 @@ const deleteSettingsModuleFunction = (state, payload) => {
     return estado
 }
 
+const addNewCategoryFunction = (state, payload) => {
+    let payloadData = {
+        id: payload.id,
+        name: payload.name,
+        type: payload.type,
+        createdBy: payload.createdBy,
+        created_at: payload.created_at
+    }
+    let dataState = state.data;
+    let estado = state;
+    if (dataState.length < 10) {
+        let data = [...dataState, payloadData];
+        estado.data = data;
+        return estado;
+    } else {
+        return estado;
+    }
+}
+
+const updateReduxCategoryFunction = (state, payload) => {
+    let payloadData = {
+        id: payload.id,
+        name: payload.name,
+        type: payload.type,
+        createdBy: payload.createdBy,
+        created_at: payload.created_at
+    }
+    let estado = state;
+    let dataArray = state.data;
+    let indexData = dataArray.findIndex(dataCategory => dataCategory.id === payload.id);
+    let dataSettingsModules = [...dataArray.splice(indexData, 1, payloadData)];    
+    return estado
+}
+
 const clenaSettingsModuleFunction = (state, payload) => {
     let estado = state;
     estado.dataSettingsModules = payload;
@@ -104,6 +140,7 @@ const clenaSettingsModuleFunction = (state, payload) => {
 const cleanStoreFunction = (state, payload) => {
     let estado = state;
     estado.categoryId = payload;
+    estado.dataSettings = [];
     return estado;
 }
 
@@ -145,6 +182,12 @@ const CategoryReducer = (state = {}, action) => {
         }
         case 'DELETE_SETTINGS_MODULE': {
             return deleteSettingsModuleFunction(state, action.payload)
+        }
+        case 'ADD_NEW_CATEGORY': {
+            return addNewCategoryFunction(state, action.payload)
+        }
+        case 'UPDATE_REDUX_CATEGORY': {
+            return updateReduxCategoryFunction(state, action.payload)
         }
         case 'CLEAN_SETTINGS_MODULE': {
             return clenaSettingsModuleFunction(state, action.payload)

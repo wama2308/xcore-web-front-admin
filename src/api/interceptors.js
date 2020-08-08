@@ -66,7 +66,11 @@ axios.interceptors.response.use(
           break;
         case 422:
           if (error.response.data.title && error.response.data.message) {
-            showMsj("warning", error.response.data);
+            showMsj("warning", {
+              plugin: "notification",
+              message: error.response.data.message[0].message,
+              title: error.response.data.title,
+            });
           } else {
             showMsj("warning", {
               plugin: "notification",

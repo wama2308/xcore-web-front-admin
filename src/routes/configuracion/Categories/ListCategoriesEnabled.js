@@ -46,7 +46,7 @@ const ListCategoriesEnabled = props => {
             })
         }
         else if (option === 2) {
-            props.loadCategoryIdAction(data._id)
+            props.loadCategoryIdAction(data.id)
             setList({
                 option: option,
                 modal: true,
@@ -58,7 +58,7 @@ const ListCategoriesEnabled = props => {
             })
         }
         else if (option === 3) {
-            props.loadCategoryIdAction(data._id)
+            props.loadCategoryIdAction(data.id)
             setList({
                 option: option,
                 modal: true,

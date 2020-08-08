@@ -50,20 +50,20 @@ export const stateInitial = {
     test_end_date: new Date(),
     test_end_date_error: "",
     test_end_date_text_error: '',
-    test_end_date_hide: 'hide',   
-    
+    test_end_date_hide: 'hide',
+
     array_type_category: [
         {
-            label:'Dash',
-            value:'dash',
+            label: 'Dash',
+            value: 'dash',
         },
         {
-            label:'Client',
-            value:'client',
+            label: 'Client',
+            value: 'client',
         },
         {
-            label:'Admin',
-            value:'admin',
+            label: 'Admin',
+            value: 'admin',
         },
     ],
     //////////////////////////////////////
@@ -89,6 +89,8 @@ export const stateInitial = {
 
     actionSettingsCategory: 0,
     keySettingsCategory: -1,
+    settingId: 0,
+    language: {},
 
     //////////////////////////////////////
 

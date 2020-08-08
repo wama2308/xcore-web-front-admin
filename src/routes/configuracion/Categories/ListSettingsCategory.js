@@ -17,7 +17,7 @@ const ListSettingsCategory = props => {
                     <thead>
                         <tr>
                             <td style={{ width: '20%' }} align="left">Nro</td>
-                            <td style={{ width: '30%' }} align="left">Pais</td>
+                            <td style={{ width: '30%' }} align="left">Lenguaje</td>
                             <td style={{ width: '30%' }} align="left">Titulo</td>
                             {
                                 !props.disabled &&
@@ -31,8 +31,8 @@ const ListSettingsCategory = props => {
                                 return (
                                     <tr key={i}>
                                         <td style={{ width: '20%' }} align="left">{i + 1}</td>
-                                        <td style={{ width: '30%' }} align="left">{data.xc_language_id.label}</td>
-                                        <td style={{ width: '30%' }} align="left">{data.menu_title}</td>                                        
+                                        <td style={{ width: '30%' }} align="left">{data.language.label}</td>
+                                        <td style={{ width: '30%' }} align="left">{data.menu_title}</td>
                                         {
                                             !props.disabled &&
                                             <td style={{ width: '20%' }} align="left">
@@ -45,14 +45,18 @@ const ListSettingsCategory = props => {
                                                     >
                                                         <Edit className="iconTable" />
                                                     </IconButton>
-                                                    <IconButton aria-label="Delete"
-                                                        title="Eliminar Configuracion"
-                                                        className="iconButtons"
-                                                        onClick={() => { props.deleteSetting(i); }}
-                                                        disabled={props.disabled}
-                                                    >
-                                                        <Delete className="iconTable" />
-                                                    </IconButton>
+                                                    {
+                                                        data.id === 0 && (
+                                                            <IconButton aria-label="Delete"
+                                                                title="Eliminar Configuracion"
+                                                                className="iconButtons"
+                                                                onClick={() => { props.deleteSetting(i); }}
+                                                                disabled={props.disabled}
+                                                            >
+                                                                <Delete className="iconTable" />
+                                                            </IconButton>
+                                                        )
+                                                    }
                                                 </div>
                                             </td>
                                         }

@@ -25,11 +25,11 @@ export const LoadCategoryAction = () => dispatch => {
                             actionDisable: 0,
                             dataDisabled: [],
                             paginationDisabled: {},
-                            categoryId: {},                            
+                            categoryId: {},
                             loading: false,
-                            dataSettings:[],
-                            dataSettingsModules:[],
-                            dataModules:[],
+                            dataSettings: [],
+                            dataSettingsModules: [],
+                            dataModules: [],
                         }
                     });
                 })
@@ -101,7 +101,7 @@ export const allCategoryDisabledFunction = (page, perPage, search) => dispatch =
         });
 };
 
-export const saveCategoryAction = (data, callback) => dispatch => {
+export const saveCategoryAction = (data, callback, callbackLoading) => dispatch => {
     getDataToken()
         .then(datos => {
             axios({
@@ -112,15 +112,16 @@ export const saveCategoryAction = (data, callback) => dispatch => {
             })
                 .then(res => {
                     callback();
-                    // dispatch({
-                    //     type: "ADD_NEW_PROVIDER",
-                    //     payload: res.data.provider
-                    // });
+                    dispatch({
+                        type: "ADD_NEW_CATEGORY",
+                        payload: res.data.xcCategory
+                    });
                     //NotificationManager.success(res.data.message);
                 })
                 .catch(error => {
-                    Array.isArray(error.response.data) ? NotificationManager.warning(error.response.data[0].message) :
-                        NotificationManager.warning(error.response.data.message);
+                    callbackLoading();
+                    //     Array.isArray(error.response.data) ? NotificationManager.warning(error.response.data[0].message) :
+                    //         NotificationManager.warning(error.response.data.message);
                 });
         })
         .catch(() => {
@@ -140,7 +141,7 @@ export const loadCategoryIdAction = (id) => dispatch => {
                     dispatch({
                         type: "LOAD_CATEGORY_ID",
                         payload: {
-                            data: res.data.xcCategory,
+                            data: res.data.xcCategory[0],
                         }
                     });
                 })
@@ -166,10 +167,10 @@ export const updateCategoryAction = (data, callback) => dispatch => {
             })
                 .then(res => {
                     callback();
-                    // dispatch({
-                    //     type: "UPDATE_REDUX_PROVIDER_ID",
-                    //     payload: res.data.provider
-                    // });
+                    dispatch({
+                        type: "UPDATE_REDUX_CATEGORY",
+                        payload: res.data.xcCategory
+                    });
                     //NotificationManager.success(res.data.message);
                 })
                 .catch(error => {
@@ -222,15 +223,47 @@ export const addSettingsCategoryFunction = (data, callback) => dispatch => {
 };
 
 export const updateSettingsCategoryFunction = (key, data, callback) => dispatch => {
-    dispatch({
-        type: "UPDATE_SETTINGS_CATEGORY",
-        payload: {
-            key: key,
-            data: data
-        }
-    });
-    callback();
-    NotificationManager.success("Configuracion editada");
+    if (data.xc_category_id === 0) {
+        dispatch({
+            type: "UPDATE_SETTINGS_CATEGORY",
+            payload: {
+                key: key,
+                data: data
+            }
+        });
+        callback();
+        NotificationManager.success("Configuracion editada");
+    }else{
+        getDataToken()
+        .then(datos => {
+            axios({
+                method: "put",
+                url: `${url}/api/v1/admin/category/setting/${data.id}`,
+                data: data,
+                headers: datos.headers
+            })
+                .then(res => {
+                    dispatch({
+                        type: "UPDATE_SETTINGS_CATEGORY",
+                        payload: {
+                            key: key,
+                            data: data
+                        }
+                    });
+                    callback();
+                    //NotificationManager.success("Configuracion editada");
+                })
+                .catch(error => {                    
+                    //NotificationManager.warning(error.response.data[0].message);
+                    // Array.isArray(error) ? NotificationManager.warning(error.response.data[0].message) :
+                    //     NotificationManager.warning(error.response.data[0].message);
+                });
+        })
+        .catch(() => {
+            console.log("Problemas con el token");
+        });
+    }
+
 };
 
 export const deleteSettingsCategoryFunction = (key) => dispatch => {
@@ -276,6 +309,5 @@ export const clenaSettingsModuleFunction = () => dispatch => {
     dispatch({
         type: "CLEAN_SETTINGS_MODULE",
         payload: []
-    });    
+    });
 }
-
