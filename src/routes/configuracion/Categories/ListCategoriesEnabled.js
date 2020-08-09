@@ -1,7 +1,7 @@
 import React, { Fragment, useState, useEffect } from 'react';
 import { Button } from "reactstrap";
 import IconButton from "@material-ui/core/IconButton";
-import { Edit, Visibility, Delete } from "@material-ui/icons";
+import { Edit, Visibility, Delete, AddCircle } from "@material-ui/icons";
 import RctCollapsibleCard from 'Components/RctCollapsibleCard/RctCollapsibleCard';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -64,6 +64,17 @@ const ListCategoriesEnabled = props => {
                 modal: true,
                 modalHeader: 'Editar Categoria',
                 buttonFooter: 'Editar',
+                disabled: false,
+                showHide: false,
+                data: data,
+            })
+        }
+        else if (option === 4) {            
+            setList({
+                option: option,
+                modal: true,
+                modalHeader: 'Registrar Modulo - Categoria ' + data.name,
+                buttonFooter: 'Guardar',
                 disabled: false,
                 showHide: false,
                 data: data,
@@ -145,7 +156,7 @@ const ListCategoriesEnabled = props => {
                                                         {data.createdBy.names} {data.createdBy.surnames}
                                                     </TableCell>
                                                     <TableCell style={{ width: '20%' }} align="left">{formatDateDateTables(data.created_at)}</TableCell>
-                                                    <TableCell style={{ width: '10%', minWidth: '200px' }} align="left">
+                                                    <TableCell style={{ width: '10%', minWidth: '220px' }} align="left">
                                                         <div className="" style={{ marginTop: '-24px', height: '10px' }}>
                                                             <IconButton aria-label="Delete"
                                                                 title="Ver Categoria"
@@ -162,6 +173,14 @@ const ListCategoriesEnabled = props => {
                                                             //disabled={GetDisabledPermits(props.permitsModule, "Editar")}
                                                             >
                                                                 <Edit className="iconTable" />
+                                                            </IconButton>
+                                                            <IconButton aria-label="Delete"
+                                                                title="Agregar Modulo"
+                                                                className="iconButtons"
+                                                                onClick={() => { openModal(4, data); }}
+                                                            //disabled={GetDisabledPermits(props.permitsModule, "Editar")}
+                                                            >
+                                                                <AddCircle className="iconTable" />
                                                             </IconButton>
                                                             <IconButton aria-label="Delete"
                                                                 title="Inactivar Categoria"

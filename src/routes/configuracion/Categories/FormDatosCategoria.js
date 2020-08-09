@@ -20,9 +20,6 @@ import "../../../assets/css/style.css";
 import { array_icons_menu } from './IconsArray';
 
 const FormDatosCategoria = props => {
-
-
-
     return (
         <div>
             <div className="row">
@@ -49,58 +46,94 @@ const FormDatosCategoria = props => {
                         </div>
                     </div>
                 </FormGroup>
-                <FormGroup className="top form-group col-sm-6">
-                    <div>
-                        <Label for="menu_icon">Icono Menu</Label>
-                        <div className={props.formDatosCategoria.menu_icon_error}>
-                            <Select
-                                isSearchable
-                                isClearable
-                                isDisabled={props.disabled}
-                                name="menu_icon"
-                                id="menu_icon"
-                                value={props.formDatosCategoria.menu_icon}
-                                onChange={event => props.handleChangeSelect(
-                                    event,
-                                    "menu_icon",
-                                    "menu_icon_error",
-                                    "menu_icon_text_error",
-                                    "menu_icon_hide"
-                                )}
-                                options={array_icons_menu}
-                            />
-                        </div>
-                        <div className={`${props.formDatosCategoria.menu_icon_hide} errorControl`}>
-                            {props.formDatosCategoria.menu_icon_text_error}
-                        </div>
-                    </div>
-                </FormGroup>
-                <FormGroup className="top form-group col-sm-6">
-                    <div>
-                        <Label for="menu_icon">Tipo</Label>
-                        <div className={props.formDatosCategoria.type_error}>
-                            <Select
-                                isSearchable
-                                isClearable
-                                isDisabled={props.disabled}
-                                name="type"
-                                id="type"
-                                value={props.formDatosCategoria.type}
-                                onChange={event => props.handleChangeSelect(
-                                    event,
-                                    "type",
-                                    "type_error",
-                                    "type_text_error",
-                                    "type_hide"
-                                )}
-                                options={props.formDatosCategoria.array_type_category}
-                            />
-                        </div>
-                        <div className={`${props.formDatosCategoria.type_hide} errorControl`}>
-                            {props.formDatosCategoria.type_text_error}
-                        </div>
-                    </div>
-                </FormGroup>
+                {
+                    props.option !== 4 && (
+                        <FormGroup className="top form-group col-sm-6">
+                            <div>
+                                <Label for="menu_icon">Icono Menu</Label>
+                                <div className={props.formDatosCategoria.menu_icon_error}>
+                                    <Select
+                                        isSearchable
+                                        isClearable
+                                        isDisabled={props.disabled}
+                                        name="menu_icon"
+                                        id="menu_icon"
+                                        value={props.formDatosCategoria.menu_icon}
+                                        onChange={event => props.handleChangeSelect(
+                                            event,
+                                            "menu_icon",
+                                            "menu_icon_error",
+                                            "menu_icon_text_error",
+                                            "menu_icon_hide"
+                                        )}
+                                        options={array_icons_menu}
+                                    />
+                                </div>
+                                <div className={`${props.formDatosCategoria.menu_icon_hide} errorControl`}>
+                                    {props.formDatosCategoria.menu_icon_text_error}
+                                </div>
+                            </div>
+                        </FormGroup>
+                    )
+                }
+                {
+                    props.option !== 4 && (
+                        <FormGroup className="top form-group col-sm-6">
+                            <div>
+                                <Label for="menu_icon">Tipo</Label>
+                                <div className={props.formDatosCategoria.type_error}>
+                                    <Select
+                                        isSearchable
+                                        isClearable
+                                        isDisabled={props.disabled}
+                                        name="type"
+                                        id="type"
+                                        value={props.formDatosCategoria.type}
+                                        onChange={event => props.handleChangeSelect(
+                                            event,
+                                            "type",
+                                            "type_error",
+                                            "type_text_error",
+                                            "type_hide"
+                                        )}
+                                        options={props.formDatosCategoria.array_type_category}
+                                    />
+                                </div>
+                                <div className={`${props.formDatosCategoria.type_hide} errorControl`}>
+                                    {props.formDatosCategoria.type_text_error}
+                                </div>
+                            </div>
+                        </FormGroup>
+                    )
+                }
+                {
+                    props.option === 4 && (
+                        <FormGroup className="top form-group col-sm-6">
+                            <div>
+                                <Label for="path">Ruta</Label>
+                                <Input
+                                    invalid={props.formDatosCategoria.path_error}
+                                    id="path"
+                                    name="path"
+                                    onKeyUp={event => props.handlekey(
+                                        "path_error",
+                                        "path_text_error",
+                                        "path_hide",
+                                        1
+                                    )}
+                                    onChange={props.handleChange}
+                                    value={props.formDatosCategoria.path}
+                                    type="text"
+                                    disabled={props.disabled}
+                                />
+                                <div className={`${props.formDatosCategoria.path_hide} errorControl`}>
+                                    {props.formDatosCategoria.path_text_error}
+                                </div>
+                            </div>
+                        </FormGroup>
+
+                    )
+                }
                 <FormGroup check className="top form-group col-sm-6">
                     <Label for="gerente">¿Nuevo item?</Label>
                     <div className={props.formDatosCategoria.new_item_error}>
@@ -215,7 +248,7 @@ const FormDatosCategoria = props => {
                         <div className={props.formDatosCategoria.test_end_date_error}>
                             <DatePicker
                                 selected={props.formDatosCategoria.test_end_date}
-                                onChange={props.handleChangeExpirationDate(                                    
+                                onChange={props.handleChangeExpirationDate(
                                     "test_end_date",
                                     "test_end_date_error",
                                     "test_end_date_text_error",
@@ -262,7 +295,7 @@ const FormDatosCategoria = props => {
                             {props.formDatosCategoria.description_text_error}
                         </div>
                     </div>
-                </FormGroup>                
+                </FormGroup>
             </div>
         </div >
     );

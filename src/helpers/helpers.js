@@ -73,11 +73,11 @@ export function getAppLayout(url) {
 export const url =
   process.env.NODE_ENV === "production"
     ? `http://xcoreweb.ddns.net:3333`
-    : `http://192.168.0.110:3333`;
+    : `http://127.0.0.1:3333`;
 export const urlWs =
   process.env.NODE_ENV === "production"
     ? `ws://xcoreweb.ddns.net:3333`
-    : `ws://192.168.0.110:3333`;
+    : `ws://127.0.0.1:3333`;
 
 export const getDataToken = () => {
   return new Promise((resolve) => {

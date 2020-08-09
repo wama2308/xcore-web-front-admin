@@ -25,6 +25,7 @@ import {
     updateSettingsModuleFunction,
     deleteSettingsModuleFunction,
     clenaSettingsModuleFunction,
+    saveModuleCategoryAction,
 } from "../../../actions/CategoryActions"
 import { connect } from "react-redux";
 import Select from "react-select";
@@ -106,7 +107,6 @@ const ModalCategories = props => {
             };
             props.confirm(message, res => {
                 if (res) {
-                    setFormDatosCategoria(prev => ({ ...prev, loading: "show" }))
                     setFormDatosCategoria({
                         ...initialFormState
                     });
@@ -114,12 +114,30 @@ const ModalCategories = props => {
                 }
             });
         } else {
-            setFormDatosCategoria(prev => ({ ...prev, loading: "show" }))
             setFormDatosCategoria({
                 ...initialFormState
             });
             props.valorCloseModal(false);
         }
+    };
+
+    const closeModalModule = (option) => {
+        const message = {
+            title: "Registrar otro modulo",
+            info: "¿Desea registrar otro modulo?"
+        };
+        props.confirm(message, res => {
+            if (res) {
+                cleanFieldsModule();
+                cleanFieldsSettings();
+                handleNextTabsOne();
+            } else {
+                setFormDatosCategoria({
+                    ...initialFormState
+                });
+                props.valorCloseModal(false);
+            }
+        });
     };
 
     const handleChange = e => {
@@ -229,6 +247,8 @@ const ModalCategories = props => {
             actionSettingsCategory: 0,
             keySettingsCategory: -1,
             settingId: 0,
+            language: {},
+
         }));
     }
 
@@ -252,20 +272,20 @@ const ModalCategories = props => {
             }))
             acum = 1;
         }
-        if (formDatosCategoria.menu_icon === null) {
+        if (props.option !== 4 && formDatosCategoria.menu_icon === null) {
             setFormDatosCategoria(prev => ({
                 ...prev,
                 menu_icon_error: 'borderColor',
-                menu_icon_text_error: "Ingrese el nombre",
+                menu_icon_text_error: "Seleccione el icono",
                 menu_icon_hide: 'show',
             }))
             acum = 1;
         }
-        if (formDatosCategoria.type === null) {
+        if (props.option !== 4 && formDatosCategoria.type === null) {
             setFormDatosCategoria(prev => ({
                 ...prev,
                 type_error: 'borderColor',
-                type_text_error: "Ingrese el nombre",
+                type_text_error: "Seleccione el tipo",
                 type_hide: 'show',
             }))
             acum = 1;
@@ -274,7 +294,7 @@ const ModalCategories = props => {
             setFormDatosCategoria(prev => ({
                 ...prev,
                 position_error: true,
-                position_text_error: "Ingrese el nombre",
+                position_text_error: "Ingrese la posicion",
                 position_hide: 'show',
             }))
             acum = 1;
@@ -283,8 +303,17 @@ const ModalCategories = props => {
             setFormDatosCategoria(prev => ({
                 ...prev,
                 individual_amount_error: true,
-                individual_amount_text_error: "Ingrese el nombre",
+                individual_amount_text_error: "Ingrese el monto de la categoria",
                 individual_amount_hide: 'show',
+            }))
+            acum = 1;
+        }
+        if (props.option === 4 && formDatosCategoria.path === '') {
+            setFormDatosCategoria(prev => ({
+                ...prev,
+                path_error: true,
+                path_text_error: "Ingrese la ruta del modulo",
+                path_hide: 'show',
             }))
             acum = 1;
         }
@@ -409,7 +438,6 @@ const ModalCategories = props => {
     }
 
     const updateSetting = (key, data) => {
-        console.log("updateSetting ", data)
         const message = {
             title: "Editar Configuracion",
             info: "¿Esta seguro que desea editar esta configuracion?"
@@ -449,12 +477,54 @@ const ModalCategories = props => {
     }
     /////////////////////////////////////////////////////////CATEGORY SETTINGS
 
+    const cleanFieldsModule = () => {
+        setFormDatosCategoria(prev => ({
+            ...prev,
+            name: "",
+            name_error: false,
+            name_text_error: '',
+            name_hide: 'hide',
+            description: '',
+            description_error: false,
+            description_text_error: '',
+            description_hide: 'hide',
+            path: '',
+            path_error: false,
+            path_text_error: '',
+            path_hide: 'hide',
+            new_item: false,
+            new_item_error: '',
+            new_item_text_error: '',
+            new_item_hide: 'hide',
+            open: false,
+            open_error: '',
+            open_text_error: '',
+            open_hide: 'hide',
+            position: "",
+            position_error: false,
+            position_text_error: '',
+            position_hide: 'hide',
+            individual_amount: "0",
+            individual_amount_error: false,
+            individual_amount_text_error: '',
+            individual_amount_hide: 'hide',
+            test: false,
+            test_error: '',
+            test_text_error: '',
+            test_hide: 'hide',
+            test_end_date: new Date(),
+            test_end_date_error: "",
+            test_end_date_text_error: '',
+            test_end_date_hide: 'hide',           
+        }));
+    }
+
     const arraysSettings = (data) => {
         let settings = [];
         data.map((dataSettings, i) => {
             settings.push(
                 {
-                    xc_language_id: dataSettings.xc_language_id.value,
+                    xc_language_id: dataSettings.xc_language_id,
                     menu_title: dataSettings.menu_title,
                     tooltips: dataSettings.tooltips,
                     test_description: dataSettings.test_description,
@@ -481,10 +551,12 @@ const ModalCategories = props => {
             }));
             let dataSend = {
                 _id: props.data ? props.data.id : 0,
+                xc_category_id: props.option === 4 ? props.data.id : 0,
                 name: formDatosCategoria.name,
-                menu_icon: formDatosCategoria.menu_icon.value,
+                menu_icon: props.option !== 4 ? formDatosCategoria.menu_icon.value : null,
                 description: formDatosCategoria.description,
-                type: formDatosCategoria.type.value,
+                type: props.option !== 4 ? formDatosCategoria.type.value : null,
+                path: props.option === 4 ? formDatosCategoria.path : '',
                 new_item: formDatosCategoria.new_item,
                 open: formDatosCategoria.open,
                 position: formDatosCategoria.position,
@@ -499,8 +571,13 @@ const ModalCategories = props => {
             if (props.option === 3) {
                 props.updateCategoryAction(dataSend, () => { closeModal(1); }, () => { loadingShowAction });
             }
+            if (props.option === 4) {                
+                props.saveModuleCategoryAction(dataSend, () => { closeModalModule(); }, () => { loadingShowAction });
+            }
         } else if (!isValid) {
-            NotificationManager.warning("¡Verifique los campos de la pestaña datos de la categoria!");
+            let message = props.option !== 4 ? "¡Verifique los campos de la pestaña datos de la categoria!" :
+                "¡Verifique los campos de la pestaña datos del modulo!";
+            NotificationManager.warning(message);
             handleNextTabsOne();
         } else if (props.category.dataSettings.length === 0) {
             NotificationManager.warning("¡Debe agregar al menos una configuracion!");
@@ -509,7 +586,7 @@ const ModalCategories = props => {
         }
     }
 
-    const cargarData = (data) => {        
+    const cargarData = (data) => {
         setFormDatosCategoria(prev => ({
             ...prev,
             name: data.name,
@@ -528,7 +605,7 @@ const ModalCategories = props => {
     }
 
     useEffect(() => {
-        if (props.option === 1) {
+        if (props.option === 1 || props.option === 4) {
             setFormDatosCategoria(prev => ({ ...prev, loading: "hide" }))
         } else if (props.option === 2 || props.option === 3) {
             if (Object.keys(props.category.categoryId).length > 0 && formDatosCategoria.actionReducer === 0) {
@@ -537,7 +614,7 @@ const ModalCategories = props => {
         }
 
     }, [props])
-    //console.log("modal categoria ", props.category.categoryId)
+    console.log("modal categoria ", props.category)
     return (
         <Dialog
             fullWidth={true}
@@ -573,7 +650,7 @@ const ModalCategories = props => {
                                     onChange={handleChangeTabs}
                                     aria-label="simple tabs example"
                                 >
-                                    <Tab label="Datos de la categoria" {...a11yProps(0)} />
+                                    <Tab label={props.option !== 4 ? "Datos de la categoria" : "Datos del Modulo"} {...a11yProps(0)} />
                                     <Tab label="Configuracion" {...a11yProps(1)} />
                                 </Tabs>
                             </AppBar>
@@ -608,26 +685,6 @@ const ModalCategories = props => {
                                     option={props.option}
                                 />
                             </TabPanel>
-                            {/* <TabPanel value={value} index={2}>
-                                <FormModuleCategory
-                                    handleChange={handleChange}
-                                    handlekey={handlekey}
-                                    handleChangeSelect={handleChangeSelect}
-                                    handleChangeSwitch={handleChangeSwitch}
-                                    handleChangeExpirationDate={handleChangeExpirationDate}
-                                    handlekeyMonto={handlekeyMonto}
-                                    eventoBlur={eventoBlur}
-                                    eventoFocus={eventoFocus}
-                                    handleDatosModulesSettings={handleDatosModulesSettings}
-                                    updateModuleSetting={updateModuleSetting}
-                                    deleteModuleSetting={deleteModuleSetting}
-                                    collapseFunction={collapseFunction}
-                                    dataSettingsModules={props.category.dataSettingsModules}
-                                    formDatosCategoria={formDatosCategoria}
-                                    confirm={props.confirm}
-                                    option={props.option}
-                                />
-                            </TabPanel> */}
                         </div>
                     </DialogContent>
                     <DialogActions>
@@ -696,6 +753,7 @@ const mapDispatchToProps = dispatch => ({
     updateSettingsModuleFunction: (key, data, callback) => dispatch(updateSettingsModuleFunction(key, data, callback)),
     deleteSettingsModuleFunction: (key) => dispatch(deleteSettingsModuleFunction(key)),
     clenaSettingsModuleFunction: () => dispatch(clenaSettingsModuleFunction()),
+    saveModuleCategoryAction: (data, callback, callbackLoading) => dispatch(saveModuleCategoryAction(data, callback, callbackLoading)),
 });
 
 export default connect(

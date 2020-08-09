@@ -311,3 +311,27 @@ export const clenaSettingsModuleFunction = () => dispatch => {
         payload: []
     });
 }
+
+export const saveModuleCategoryAction = (data, callback, callbackLoading) => dispatch => {
+    getDataToken()
+        .then(datos => {
+            axios({
+                method: "post",
+                url: `${url}/api/v1/admin/module/store`,
+                data: data,
+                headers: datos.headers
+            })
+                .then(res => {
+                    callback();                    
+                    //NotificationManager.success(res.data.message);
+                })
+                .catch(error => {
+                    callbackLoading();
+                    //     Array.isArray(error.response.data) ? NotificationManager.warning(error.response.data[0].message) :
+                    //         NotificationManager.warning(error.response.data.message);
+                });
+        })
+        .catch(() => {
+            console.log("Problemas con el token");
+        });
+};
